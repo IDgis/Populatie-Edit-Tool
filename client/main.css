@@ -1,0 +1,28 @@
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-image: url('images/PopulatieService1.png');
+}
+
+#content {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#edit-tool-button {
+    position: absolute;
+    top: 133px;
+    left: 751px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.modal {
+    display: block;
+}
+
+.modal-body {
+    line-height: 2.3;
+}
