@@ -2,7 +2,7 @@
 
 echo deploying Populatie Edit Tool...
 
-export EDIT_TOOL_VERSION=0.2.0
+export EDIT_TOOL_VERSION=0.2.1
 
 export DOMAIN_PREFIX=pop-edit-tool
 export DOMAIN_SUFFIX=local

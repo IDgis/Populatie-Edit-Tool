@@ -83,16 +83,17 @@ export class VerblijfsObject extends Component {
     render() {
         return (
             <div ref={node => this.vbo = node}>
-                {Object.keys(this.state.verblijfsObject).map((key, i) =>
-                    <div className="row" key={key + "_" + i}>
+                {Object.keys(this.state.verblijfsObject).map((key, i) => 
+                    
+                    key !== "hoofdadres" ? <div className="row" key={key + "_" + i}>
                         <div className="col-xs-2">{key}</div>
                         <div className="col-xs-2">{this.state.verblijfsObject[key]}</div>
                         <div className="col-xs-8">{this.getAanvullendDropdown(key)}</div>
-                    </div>
+                    </div> : null
                 )}
                 {this.state.extraBagFuncties}
                 {this.state.addButtonVisible ?
-                <div id={this.state.verblijfsObject.hoofdadres} className="row">
+                <div id={this.state.verblijfsObject.identificatie} className="row">
                     <div className="col-xs-12">
                         <button type="button" className="btn btn-success btn-xs" onClick={this.addBagFunctie}>
                             <span className="glyphicon glyphicon-plus"></span>
