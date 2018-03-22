@@ -15,23 +15,20 @@ export function getJson() {
         "verblijfsobjecten": [
             {
                 "identificatie": "0402010001621993",
-                "hoofdadres": "0402200001621994",
+                "hoofdadres": "Egelantierstraat 13, 1214EH Hilversum",
                 "oppervlakte": 79,
-                "postcode": "1214EH",
                 "woon": 2.09
             },
             {
                 "identificatie": "0402010001621991",
-                "hoofdadres": "0402200001621992",
+                "hoofdadres": "Egelantierstraat 15, 1214EH Hilversum",
                 "oppervlakte": 50,
-                "postcode": "1214EH",
                 "woon": 1.2
             },
             {
                 "identificatie": "0402010001618442",
-                "hoofdadres": "0402200001618443",
+                "hoofdadres": "Egelantierstraat 17, 1214EH Hilversum",
                 "oppervlakte": 2359,
-                "postcode": "1214EH",
                 "woon": 2.09,
                 "gezond": 78.63
             }
