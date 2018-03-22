@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  pop-edit-tool:
+    restart: always
+    image: idgis/pop-edit-tool:${EDIT_TOOL_VERSION}
+    ports:
+      - "80:80"
+    environment:
+      - ROOT_URL=http://${DOMAIN_PREFIX}.idgis.${DOMAIN_SUFFIX}
+    networks:
+      - populatie-edit
+
+networks:
+  populatie-edit:
+    external: true

@@ -9,6 +9,36 @@ export function getGeoJson() {
     }
 }
 
+export function getJson() {
+    return {
+        "pand": "04021000001618169",
+        "verblijfsobjecten": [
+            {
+                "identificatie": "0402010001621993",
+                "hoofdadres": "0402200001621994",
+                "oppervlakte": 79,
+                "postcode": "1214EH",
+                "woon": 2.09
+            },
+            {
+                "identificatie": "0402010001621991",
+                "hoofdadres": "0402200001621992",
+                "oppervlakte": 50,
+                "postcode": "1214EH",
+                "woon": 1.2
+            },
+            {
+                "identificatie": "0402010001618442",
+                "hoofdadres": "0402200001618443",
+                "oppervlakte": 2359,
+                "postcode": "1214EH",
+                "woon": 2.09,
+                "gezond": 78.63
+            }
+        ]
+    }
+}
+
 export function getAanvullendeIndelingen() {
     return {
         "Woonfunctie": [
