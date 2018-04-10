@@ -58,6 +58,7 @@ export function getTabel() {
     return [
         {
             "hoofdfunctie BAG": "Woonfunctie",
+            "rekenindicator": "personen per vbo",
             "aanvullende functies": [
                 {
                     "functie": "Woonfunctie niet-gezin (<60 m2 bvo)",
@@ -77,6 +78,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Bijeenkomstfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Bijeenkomstfunctie klein (personeel en bezoekers)",
@@ -103,6 +105,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Celfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Celfunctie (inclusief gehuisvesten)",
@@ -115,6 +118,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Gezondheidsfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Gezondheidsfunctie (kliniek, artsenpraktijk)",
@@ -134,6 +138,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Industriefunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Industriefunctie klein (milieucategorie 3.1 en lager)",
@@ -153,6 +158,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Kantoorfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Kantoorfunctie klein",
@@ -179,6 +185,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Logiesfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Logiesfunctie klein (personeel en gasten)",
@@ -198,6 +205,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Onderwijsfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Onderwijsfunctie (lagere/middelbare/mbo school)",
@@ -217,6 +225,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Sportfunctie (gebouw)",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Sportfunctie klein (inclusief bezoekers)",
@@ -236,6 +245,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Winkelfunctie",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Winkelfunctie (inclusief bezoekers) klein",
@@ -255,6 +265,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Gerealiseerde evenemententerreinen",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Terugkerend evenement (stadion, partycentrum, aangewezen evenemententerrein)",
@@ -267,6 +278,7 @@ export function getTabel() {
         },
         {
             "hoofdfunctie BAG": "Gerealiseerde recreatie-terreinen",
+            "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
                     "functie": "Volkstuin, dierentuin, pretpark",
