@@ -25,7 +25,8 @@ export class EditTool extends Component {
         }
     }
 
-    calculateResult = () => {
+    calculateResult = (evt) => {
+        evt.preventDefault();
         const output = calculateOutput(this.state.input, this.state.tabel);
 
         if(document.getElementById('saveButton').classList.contains('disabled')) {
@@ -50,11 +51,11 @@ export class EditTool extends Component {
                         </div>
                         <div className="modal-footer">
                             <button className="btn btn-info" type="button" onClick={this.calculateResult.bind(this)}>
-                                <span className="glypicon glyphicon-stop">&nbsp;</span>
+                                <span className="glyphicon glyphicon-list-alt"></span>&nbsp;
                                 Rekenen
                             </button>
                             <button id="saveButton" className="btn btn-success disabled" type="button" onClick={this.saveValues.bind(this)}>
-                                <span className="glyphicon glyphicon-download">&nbsp;</span>
+                                <span className="glyphicon glyphicon-download"></span>&nbsp;
                                 Bewaren
                             </button>
                         </div>

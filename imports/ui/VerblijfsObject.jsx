@@ -54,7 +54,7 @@ export class VerblijfsObject extends Component {
             <div className="row verblijfsfunctie-add">
                 <strong><em>Voeg Verblijfsfunctie toe</em></strong>
                 <form className="verblijfsfunctie-form" onSubmit={this.addBagFunctie.bind(this)}>
-                    <button type="submit" className="btn btn-success btn-xs">
+                    <button type="submit" className="btn btn-success btn-xs" title="Voeg verblijfsfunctie toe">
                         <span className="glyphicon glyphicon-plus"></span>
                     </button>
                     <select>
@@ -78,8 +78,7 @@ export class VerblijfsObject extends Component {
             "aantal-personen": 0,
             "aanvullend": "",
             "functie": selectedBagFunctie,
-            "oppervlakte": selectedOppervlakte,
-            //"mutaties": "toegevoegd"
+            "oppervlakte": selectedOppervlakte
         }
         vbo['verblijfsfuncties'].push(verblijfsfunctie);
 
@@ -93,6 +92,13 @@ export class VerblijfsObject extends Component {
     }
 
     /**
+     * Removes this 'VerblijfsObject'
+     */
+    removeVerblijfsObject = (evt) => {
+        this.props.removeVerblijfsObject(this.state.verblijfsobject);
+    }
+
+    /**
      * Remove 'Verblijfsfuncties' from this 'Verblijfsobject'
      * 
      * @param remainingFuncties - The 'Verblijfsfuncties' to keep in this 'Verblijfsobject'
@@ -100,7 +106,6 @@ export class VerblijfsObject extends Component {
     removeVerblijfsfunctie = (remainingFuncties) => {
         const vbo = this.state.verblijfsobject;
         vbo['verblijfsfuncties'] = remainingFuncties;
-        //vbo['mutaties'] = 'gewijzigd';
 
         if(!document.getElementById('saveButton').classList.contains('disabled')) {
             document.getElementById('saveButton').classList.add('disabled');
@@ -119,16 +124,17 @@ export class VerblijfsObject extends Component {
 
         return (
             <div className="row verblijfsobject">
-                <div className="card">
-                    <div className="card-header" id={`heading${verblijfsobject['verblijfsobjectid']}`}>
-                        <h4>
-                            <button className="btn btn-link" data-toggle="collapse" data-target={`#collapse${verblijfsobject['verblijfsobjectid']}`} aria-expanded="false" aria-controls={`collapse${verblijfsobject['verblijfsobjectid']}`}>
-                                Verblijfsobject: {`${straat} ${huisnr}${huisltr}, ${postcode} ${woonplaats}`}
-                            </button>
+                <div className="panel panel-primary">
+                    <div className="panel-heading" id={`heading${verblijfsobject['verblijfsobjectid']}`}>
+                        <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${verblijfsobject['verblijfsobjectid']}`} aria-expanded="false" aria-controls={`collapse${verblijfsobject['verblijfsobjectid']}`}>
+                            Verblijfsobject: {`${straat} ${huisnr}${huisltr}, ${postcode} ${woonplaats}`}   
+                            <button type="button" className="btn btn-danger btn-xs" title="Verwijder verblijfsobject" onClick={this.removeVerblijfsObject.bind(this)} >
+                                <span className="glyphicon glyphicon-minus"></span>
+                            </button>                         
                         </h4>
                     </div>
                     <div id={`collapse${verblijfsobject['verblijfsobjectid']}`} className="collapse" aria-labelledby={`heading${verblijfsobject['verblijfsobjectid']}`}>
-                        <div className="card-body verblijfsobject-content">
+                        <div className="panel-body">
                             <div className="row">
                                 <div className="col-xs-2">Verblijfsobjectid</div>
                                 <div className="col-xs-10">{verblijfsobject['verblijfsobjectid']}</div>
