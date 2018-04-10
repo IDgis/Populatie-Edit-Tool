@@ -79,9 +79,13 @@ export class VerblijfsObject extends Component {
             "aanvullend": "",
             "functie": selectedBagFunctie,
             "oppervlakte": selectedOppervlakte,
-            "mutaties": "toegevoegd"
+            //"mutaties": "toegevoegd"
         }
         vbo['verblijfsfuncties'].push(verblijfsfunctie);
+
+        if(!document.getElementById('saveButton').classList.contains('disabled')) {
+            document.getElementById('saveButton').classList.add('disabled');
+        }
 
         this.setState({
             verblijfsobject: vbo
@@ -96,6 +100,12 @@ export class VerblijfsObject extends Component {
     removeVerblijfsfunctie = (remainingFuncties) => {
         const vbo = this.state.verblijfsobject;
         vbo['verblijfsfuncties'] = remainingFuncties;
+        //vbo['mutaties'] = 'gewijzigd';
+
+        if(!document.getElementById('saveButton').classList.contains('disabled')) {
+            document.getElementById('saveButton').classList.add('disabled');
+        }
+
         this.setState({verblijfsobject: vbo});
     }
 

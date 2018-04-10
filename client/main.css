@@ -49,6 +49,18 @@ body {
     left: 10px;
 }
 
+.verblijfsobject-form {
+    line-height: 1.0;
+}
+
+.verblijfsobject-form button {
+    font-size: 10px;
+}
+
+.verblijfsobject-form input {
+    margin-left: 10px;
+}
+
 .verblijfsfunctie {
     position: relative;
     left: 15px;

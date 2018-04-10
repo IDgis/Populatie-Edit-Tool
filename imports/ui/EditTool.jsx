@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
 import { Pand } from './Pand';
-
-import { getAanvullendeIndelingen, getInputJson, getTabel } from './testdata';
-import { getJson } from './testdata';
+import { getInputJson, getTabel } from '../methods/testdata';
+import { calculateOutput } from '../methods/rekenmodule';
 
 
 export class EditTool extends Component {
@@ -12,18 +11,28 @@ export class EditTool extends Component {
         super(props);
         this.state = {
             input: getInputJson(),
+            output: {},
             tabel: getTabel()
         }
     }
 
     saveValues = (evt) => {
         evt.preventDefault();
-        const body = document.body.style.backgroundImage = "url('images/PopulatieService2.png')";
-        this.props.closeForm();
+
+        if(!evt.target.classList.contains('disabled')) {
+            const body = document.body.style.backgroundImage = "url('images/PopulatieService2.png')";
+            this.props.closeForm();
+        }
     }
 
     calculateResult = () => {
-        console.log(this.state.input);
+        const output = calculateOutput(this.state.input, this.state.tabel);
+
+        if(document.getElementById('saveButton').classList.contains('disabled')) {
+            document.getElementById('saveButton').classList.remove('disabled');
+        }
+
+        this.setState({output: output});
     }
 
     render() {
@@ -44,7 +53,7 @@ export class EditTool extends Component {
                                 <span className="glypicon glyphicon-stop">&nbsp;</span>
                                 Rekenen
                             </button>
-                            <button className="btn btn-success" type="button" onClick={this.saveValues.bind(this)}>
+                            <button id="saveButton" className="btn btn-success disabled" type="button" onClick={this.saveValues.bind(this)}>
                                 <span className="glyphicon glyphicon-download">&nbsp;</span>
                                 Bewaren
                             </button>

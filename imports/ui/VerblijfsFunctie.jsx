@@ -38,7 +38,11 @@ export class VerblijfsFunctie extends Component {
         const aanvullendeIndeling = evt.target.value;
         const verblijfsfunctieData = this.state.verblijfsfunctieData;
         verblijfsfunctieData['aanvullend'] = aanvullendeIndeling;
-        verblijfsfunctieData['mutaties'] = 'gewijzigd';
+        //verblijfsfunctieData['mutaties'] = 'gewijzigd';
+
+        if(!document.getElementById('saveButton').classList.contains('disabled')) {
+            document.getElementById('saveButton').classList.add('disabled');
+        }
 
         this.setState({verblijfsfunctieData: verblijfsfunctieData});
     }
