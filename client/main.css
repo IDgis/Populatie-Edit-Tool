@@ -1,3 +1,8 @@
+.row {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     height: 100%;
     width: 100%;
@@ -23,13 +28,71 @@ body {
     display: block;
 }
 
+.modal-lg {
+    width: 1000px;
+}
+
 .modal-body {
     line-height: 2.0;
-    max-height: 500px;
-    overflow-y: scroll;
+    max-height: 700px;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
-.modal-body div {
-    padding-left: 15px;
+.pand {
+    position: relative;
+    left: 5px;
+}
+
+.verblijfsobject {
+    position: relative;
+}
+
+.panel-title {
+    cursor: pointer;
+}
+
+.panel-title button {
+    font-size: 10px;
+    float: right;
+}
+
+.panel-body {
+    padding-left: 5px;
+}
+
+.verblijfsobject-form {
+    line-height: 1.0;
+}
+
+.verblijfsobject-form button {
+    font-size: 10px;
+}
+
+.verblijfsobject-form input {
+    margin-left: 10px;
+}
+
+.verblijfsfunctie {
+    position: relative;
+    left: 15px;
+}
+
+.verblijfsfunctie-add {
+    position: relative;
+    left: 15px;
+}
+
+.verblijfsfunctie-form button {
+    font-size: 10px;
+}
+
+.verblijfsfunctie-form select {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.verblijfsfunctie-form input {
+    line-height: 1.0;
+    width: 60px;
 }

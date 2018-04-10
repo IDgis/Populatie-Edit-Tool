@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 
-import { VerblijfsObject } from './VerblijfsObject';
-
-import { getAanvullendeIndelingen } from './testdata';
-import { getJson } from './testdata';
+import { Pand } from './Pand';
+import { getInputJson, getTabel } from '../methods/testdata';
+import { calculateOutput } from '../methods/rekenmodule';
 
 
 export class EditTool extends Component {
@@ -11,47 +10,30 @@ export class EditTool extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: getJson()
+            input: getInputJson(),
+            output: {},
+            tabel: getTabel()
         }
-
-        indelingen = getAanvullendeIndelingen();
     }
-
-    loadData = () => (
-        <div className="modal-body">
-            {this.state.data.verblijfsobjecten.map((verblijfsObject, i) => {
-                return(
-                    <div className="row" key={verblijfsObject.identificatie}>
-                        <h4>Verblijfsobject: {verblijfsObject.hoofdadres}</h4>
-                        <VerblijfsObject verblijfsObject={verblijfsObject} indelingen={indelingen} />
-                    </div>
-                );
-            })}
-        </div>
-    );
 
     saveValues = (evt) => {
         evt.preventDefault();
-        const body = document.body.style.backgroundImage = "url('images/PopulatieService2.png')";
-        this.props.closeForm();
+
+        if(!evt.target.classList.contains('disabled')) {
+            const body = document.body.style.backgroundImage = "url('images/PopulatieService2.png')";
+            this.props.closeForm();
+        }
     }
 
-    calculateResult = () => {
-        const bagFuncties = Object.keys(indelingen);
-        const oldData = this.state.data;
-        this.state.data.verblijfsobjecten.forEach((verblijfsObject, i) => {
-            const keys = Object.keys(verblijfsObject);
-            keys.forEach(key => {
-                bagFuncties.forEach(functie => {
-                    if(functie.toLowerCase().indexOf(key.toLowerCase()) != -1) {
-                        oldData.verblijfsobjecten[i][key] = Math.floor(Math.random() * (1000 - 100) + 100) / 100;
-                    }
-                });
-            });
-        });
-        this.setState({
-            data: oldData
-        });
+    calculateResult = (evt) => {
+        evt.preventDefault();
+        const output = calculateOutput(this.state.input, this.state.tabel);
+
+        if(document.getElementById('saveButton').classList.contains('disabled')) {
+            document.getElementById('saveButton').classList.remove('disabled');
+        }
+
+        this.setState({output: output});
     }
 
     render() {
@@ -60,16 +42,20 @@ export class EditTool extends Component {
                 <div className="modal-dialog modal-lg">
                     <div className="modal-content" modal-transclude="">
                         <div className="modal-header">
-                            <h2>Pand {this.state.data.pand}</h2>
+                            <h2>Populatie Edit Tool</h2>
                         </div>
-                        {this.loadData()}
+                        <div className="modal-body">
+                            {this.state.input.panden.map((pand, index) => (
+                                <Pand pand={pand} key={pand['pandid']} tabel={this.state.tabel} />
+                            ))}
+                        </div>
                         <div className="modal-footer">
                             <button className="btn btn-info" type="button" onClick={this.calculateResult.bind(this)}>
-                                <span className="glypicon glyphicon-stop">&nbsp;</span>
+                                <span className="glyphicon glyphicon-list-alt"></span>&nbsp;
                                 Rekenen
                             </button>
-                            <button className="btn btn-success" type="button" onClick={this.saveValues.bind(this)}>
-                                <span className="glyphicon glyphicon-download">&nbsp;</span>
+                            <button id="saveButton" className="btn btn-success disabled" type="button" onClick={this.saveValues.bind(this)}>
+                                <span className="glyphicon glyphicon-download"></span>&nbsp;
                                 Bewaren
                             </button>
                         </div>
