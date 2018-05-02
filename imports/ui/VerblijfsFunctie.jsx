@@ -34,6 +34,9 @@ export class VerblijfsFunctie extends Component {
         );
     }
 
+    /**
+     * When selecting another value in the dropdown, update the json object accordingly.
+     */
     changeAanvullendeIndeling = (evt) => {
         const aanvullendeIndeling = evt.target.value;
         const verblijfsfunctieData = this.state.verblijfsfunctieData;
@@ -43,7 +46,7 @@ export class VerblijfsFunctie extends Component {
             document.getElementById('saveButton').classList.add('disabled');
         }
 
-        this.setState({verblijfsfunctieData: verblijfsfunctieData});
+        this.setState({verblijfsfunctieData});
     }
 
     /**
@@ -51,18 +54,42 @@ export class VerblijfsFunctie extends Component {
      */
     removeVerblijfsfunctie = (evt) => {
         evt.preventDefault();
-
-        const hoofdfunctie = this.state.verblijfsfunctie;
+        const hoofdfunctie = this.state.verblijfsfunctieData;
+        hoofdfunctie['mutaties'] = 'verwijderd';
         const vbo = this.props.verblijfsobject;
-        const verblijfsfuncties = vbo['verblijfsfuncties'];
-        const remainingFuncties = verblijfsfuncties.filter(functie => hoofdfunctie.toLowerCase().indexOf(functie['functie'].toLowerCase()) == -1);
-        
-        this.props.removeVerblijfsfunctie(remainingFuncties);
+
+        this.props.removeVerblijfsfunctie(vbo['verblijfsfuncties']);
+    }
+
+    /**
+     * Change the number of woonunits based on the given input
+     */
+    changeWoonunits = (evt) => {
+        const verblijfsfunctieData = this.state.verblijfsfunctieData;
+        verblijfsfunctieData['aantal-woonunits'] = parseInt(evt.target.value);
+        if(!verblijfsfunctieData.mutaties) {
+            verblijfsfunctieData['mutaties'] = 'gewijzigd';
+        }
+
+        this.setState({verblijfsfunctieData});
+    }
+
+    /**
+     * Change the area of the 'Verblijfsfunctie' based on the given input
+     */
+    changeOppervlakte = (evt) => {
+        const verblijfsfunctieData = this.state.verblijfsfunctieData;
+        verblijfsfunctieData['oppervlakte'] = parseInt(evt.target.value);
+        if(!verblijfsfunctieData.mutaties) {
+            verblijfsfunctieData['mutaties'] = 'gewijzigd';
+        }
+
+        this.setState({verblijfsfunctieData});
     }
 
     render() {
         const oppervlakte = this.state.verblijfsfunctieData['oppervlakte'];
-        const key = this.props.verblijfsobject['verblijfsobjectid'] + '_' + this.props.verblijfsfunctie['functie'];
+        const key = this.props.verblijfsobject['verblijfsobjectid'] + '_' + this.props.verblijfsfunctie['functie'] + "_" + this.props.parentKey;
 
         return (
             <div className="row verblijfsfunctie">
@@ -79,12 +106,19 @@ export class VerblijfsFunctie extends Component {
                         <div className="panel-body">
                             <div className="row">
                                 <div className="col-xs-3">Oppervlakte</div>
-                                <div className="col-xs-9">{oppervlakte}</div>
+                                <div className="col-xs-9"><input type="number" defaultValue={oppervlakte} onChange={this.changeOppervlakte.bind(this)} />m2</div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-3">Aantal personen</div>
                                 <div className="col-xs-9">{this.state.verblijfsfunctieData['aantal-personen']}</div>
                             </div>
+                            {
+                                (this.state.verblijfsfunctie !== 'Woonfunctie') ? <div></div> :
+                                <div className="row">
+                                    <div className="col-xs-3">Aantal woonunits</div>
+                                    <div className="col-xs-9"><input type="number" defaultValue={1} onChange={this.changeWoonunits.bind(this)} /></div>
+                                </div>
+                            }
                             <div className="row">
                                 <div className="col-xs-3">Aanvullende indeling</div>
                                 <div className="col-xs-9">{this.getAanvullendeIndeling(this.state.verblijfsfunctieData['aanvullend'])}</div>

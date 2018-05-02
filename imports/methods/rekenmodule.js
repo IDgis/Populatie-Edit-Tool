@@ -32,7 +32,7 @@ function calculateVerblijfsfuncties(verblijfsobject, table) {
 
         verblijfsfunctie['functie'] = hoofdfunctie;
         verblijfsfunctie['aanvullend'] = aanvullendeIndeling;
-        verblijfsfunctie['aantal-personen'] = numPersons;
+        verblijfsfunctie['aantal-personen'] = parseFloat(numPersons);
         return verblijfsfunctie;
     });
 }

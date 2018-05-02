@@ -78,7 +78,8 @@ export class VerblijfsObject extends Component {
             "aantal-personen": 0,
             "aanvullend": "",
             "functie": selectedBagFunctie,
-            "oppervlakte": selectedOppervlakte
+            "oppervlakte": parseFloat(selectedOppervlakte),
+            "mutaties": "toegevoegd"
         }
         vbo['verblijfsfuncties'].push(verblijfsfunctie);
 
@@ -95,7 +96,12 @@ export class VerblijfsObject extends Component {
      * Removes this 'VerblijfsObject'
      */
     removeVerblijfsObject = (evt) => {
-        this.props.removeVerblijfsObject(this.state.verblijfsobject);
+        evt.preventDefault();
+        const verblijfsobject = this.state.verblijfsobject;
+        verblijfsobject['mutaties'] = 'verwijderd';
+        const pand = this.props.pand;
+        
+        this.props.removeVerblijfsObject(pand['verblijfsobjecten']);
     }
 
     /**
@@ -114,6 +120,23 @@ export class VerblijfsObject extends Component {
         this.setState({verblijfsobject: vbo});
     }
 
+    /**
+     * Change the area of the 'Verblijfsobject' based on the given input
+     */
+    changeOppervlakte = (evt) => {
+        const verblijfsobject = this.state.verblijfsobject;
+        verblijfsobject['oppervlakte'] = parseFloat(evt.target.value);
+        if(!verblijfsobject.mutaties) {
+            verblijfsobject['mutaties'] = 'gewijzigd';
+        }
+
+        if(!document.getElementById('saveButton').classList.contains('disabled')) {
+            document.getElementById('saveButton').classList.add('disabled');
+        }
+
+        this.setState({verblijfsobject});
+    }
+
     render() {
         const verblijfsobject = this.state.verblijfsobject;
         const straat = verblijfsobject.adres.openbareruimte;
@@ -121,6 +144,10 @@ export class VerblijfsObject extends Component {
         const huisltr = verblijfsobject.adres.huisletter;
         const postcode = verblijfsobject.adres.postcode;
         const woonplaats = verblijfsobject.adres.woonplaatsnaam;
+
+        const verblijfsfuncties = verblijfsobject.verblijfsfuncties.filter(verblijfsfunctie => {
+            return (!verblijfsfunctie.mutaties || (verblijfsfunctie.mutaties && verblijfsfunctie.mutaties !== 'verwijderd'));
+        });
 
         return (
             <div className="row verblijfsobject">
@@ -141,15 +168,17 @@ export class VerblijfsObject extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-xs-2">Oppervlakte</div>
-                                <div className="col-xs-10">{verblijfsobject['oppervlakte']}</div>
+                                <div className="col-xs-10"><input type="number" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>
                             </div>
                             <div className="row">
-                                {verblijfsobject['verblijfsfuncties'].map((verblijfsfunctie, index) => (
+                                {verblijfsfuncties.map((verblijfsfunctie, index) => (
                                     <VerblijfsFunctie 
                                         verblijfsfunctie={verblijfsfunctie} 
-                                        key={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie']} 
+                                        index={index}
+                                        key={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index} 
                                         tabel={this.props.tabel} verblijfsobject={this.state.verblijfsobject}
                                         removeVerblijfsfunctie={this.removeVerblijfsfunctie.bind(this)}
+                                        parentKey={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index}
                                     />
                                 ))}
                             </div>
