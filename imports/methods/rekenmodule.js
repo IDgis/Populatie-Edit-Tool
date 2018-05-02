@@ -24,8 +24,6 @@ function calculcateVerblijfsobjecten(pand, table) {
 function calculateVerblijfsfuncties(verblijfsobject, table) {
     return verblijfsobject['verblijfsfuncties'].map(verblijfsfunctie => {
         if(!(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'verwijderd')) {
-            console.log(verblijfsfunctie);
-
             const hoofdfunctieObject = getHoofdfunctieObject(verblijfsfunctie, table);
             const hoofdfunctie = hoofdfunctieObject['hoofdfunctie BAG'];
             const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
