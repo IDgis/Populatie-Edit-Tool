@@ -2,10 +2,17 @@
 
 echo deploying Populatie Edit Tool...
 
-export EDIT_TOOL_VERSION=0.3.0
+export EDIT_TOOL_VERSION=0.4.1
 
 export DOMAIN_PREFIX=pop-edit-tool
 export DOMAIN_SUFFIX=local
+
+export METEOR_SETTINGS='{
+    "public": {
+        "originUrl": "null",
+        "targetUrl": "*"
+    }
+}'
 
 COMPOSE_ARGS="\
     -p pop \
