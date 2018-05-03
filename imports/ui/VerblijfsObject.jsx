@@ -43,12 +43,17 @@ export class VerblijfsObject extends Component {
      * Render the 'Voeg Verblijfsfunctie toe' element
      */
     getAddBagFunctie = () => {
-        const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties'].map(functie => functie['functie']);
+        const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties']
+            .filter(functie => (!functie.mutaties || (functie.mutaties && functie.mutaties !== 'verwijderd')))
+            .map(functie => functie['functie']);
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
 
         // Check which BAG functie aren't used yet.
-        const available = allHoofdfuncties.filter(hoofdfunctie => 
-            verblijfsfuncties.filter(functie => hoofdfunctie.toLowerCase().indexOf(functie.toLowerCase()) != -1).length == 0);        
+        const available = allHoofdfuncties.filter(hoofdfunctie =>
+            verblijfsfuncties.filter(functie =>
+                hoofdfunctie.toLowerCase().indexOf(functie.toLowerCase()) != -1 && hoofdfunctie !== 'Woonfunctie'
+            ).length == 0
+        );
 
         return(
             <div className="row verblijfsfunctie-add">
@@ -175,7 +180,7 @@ export class VerblijfsObject extends Component {
                                     <VerblijfsFunctie 
                                         verblijfsfunctie={verblijfsfunctie} 
                                         index={index}
-                                        key={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index} 
+                                        key={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index + '_' + verblijfsfunctie['oppervlakte']} 
                                         tabel={this.props.tabel} verblijfsobject={this.state.verblijfsobject}
                                         removeVerblijfsfunctie={this.removeVerblijfsfunctie.bind(this)}
                                         parentKey={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index}
