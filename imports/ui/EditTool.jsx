@@ -5,8 +5,6 @@ import { Pand } from './Pand';
 import { getTabel } from '../methods/testdata';
 import { calculateOutput } from '../methods/rekenmodule';
 
-import * as queryString from 'query-string';
-
 
 export class EditTool extends Component {
 
