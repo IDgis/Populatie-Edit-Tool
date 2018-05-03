@@ -114,10 +114,12 @@
                 ]
             };
 
+            const origin = 'http://localhost:3000';
+
             window.addEventListener('message', editToolListener, false);
 
             function editToolListener(event) {
-                if(event.origin === 'http://localhost:3000') {
+                if(event.origin === origin) {
                     console.log('POPULATIE SERVICE:');
                     console.log(event);
                 }
@@ -125,12 +127,11 @@
 
             function test() {
                 const iFrame = document.getElementsByTagName('iframe')[0];
-                iFrame.contentWindow.postMessage(JSON.stringify(json), 'http://localhost:3000');
+                iFrame.contentWindow.postMessage(JSON.stringify(json), origin);
             }
         </script>
     </head>
     <body>
-        <iframe name="iframe" id="iframe_id" src="http://localhost:3000" height="900" width="1000" onload="test();" >
-        </iframe>
+        <iframe name="iframe" id="iframe_id" src="http://localhost:3000" height="700" width="1000" onload="test();" ></iframe>
     </body>
 </html>
