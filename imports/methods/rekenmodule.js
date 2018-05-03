@@ -12,27 +12,36 @@ export function calculateOutput(input, table) {
 
 function calculcateVerblijfsobjecten(pand, table) {
     return pand['verblijfsobjecten'].map(verblijfsobject => {
-        const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table);
+        if(!(verblijfsobject.mutaties && verblijfsobject.mutaties === 'verwijderd')) {
+            const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table);
 
-        verblijfsobject['verblijfsfuncties'] = verblijfsfuncties;
+            verblijfsobject['verblijfsfuncties'] = verblijfsfuncties;
+        }
         return verblijfsobject;
     });
 }
 
 function calculateVerblijfsfuncties(verblijfsobject, table) {
     return verblijfsobject['verblijfsfuncties'].map(verblijfsfunctie => {
-        const hoofdfunctieObject = getHoofdfunctieObject(verblijfsfunctie, table);
-        const hoofdfunctie = hoofdfunctieObject['hoofdfunctie BAG'];
-        const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
-        const aanvullendeIndeling = verblijfsfunctie['aanvullend'] === '' ? aanvullendeIndelingen[0]['functie'] : verblijfsfunctie['aanvullend'];
-        const rekenIndicator = hoofdfunctieObject['rekenindicator'];
-        const oppervlakte = verblijfsfunctie['oppervlakte']
-        const rekenObject = aanvullendeIndelingen.filter(indeling => indeling['functie'] === aanvullendeIndeling)[0];
-        const numPersons = calculateNumPersons(rekenIndicator, oppervlakte, rekenObject, verblijfsobject);
+        if(!(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'verwijderd')) {
+            const hoofdfunctieObject = getHoofdfunctieObject(verblijfsfunctie, table);
+            const hoofdfunctie = hoofdfunctieObject['hoofdfunctie BAG'];
+            const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
+            const aanvullendeIndeling = verblijfsfunctie['aanvullend'] === '' ? aanvullendeIndelingen[0]['functie'] : verblijfsfunctie['aanvullend'];
+            const rekenIndicator = hoofdfunctieObject['rekenindicator'];
+            const oppervlakte = verblijfsfunctie['oppervlakte']
+            const rekenObject = aanvullendeIndelingen.filter(indeling => indeling['functie'] === aanvullendeIndeling)[0];
+            const numPersons = calculateNumPersons(rekenIndicator, oppervlakte, rekenObject, verblijfsobject);
 
-        verblijfsfunctie['functie'] = hoofdfunctie;
-        verblijfsfunctie['aanvullend'] = aanvullendeIndeling;
-        verblijfsfunctie['aantal-personen'] = numPersons;
+            if(verblijfsfunctie['aantal-personen'] !== parseFloat(numPersons) &&
+                    !(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'toegevoegd')) {
+                verblijfsfunctie['mutaties'] = 'gewijzigd';
+            }
+
+            verblijfsfunctie['functie'] = hoofdfunctie;
+            verblijfsfunctie['aanvullend'] = aanvullendeIndeling;
+            verblijfsfunctie['aantal-personen'] = parseFloat(numPersons);
+        }
         return verblijfsfunctie;
     });
 }

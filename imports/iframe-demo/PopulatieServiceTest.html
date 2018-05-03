@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <title>Populatie Service</title>
+        <script type="text/javascript">
+            const json = {
+                "refps": "",
+                "datum tijd (UTC)": "",
+                "gebruikernaam": "",
+                "gebruikderid": "",
+                "status": "",
+                "panden": [
+                    {
+                        "pandid": "0402010001618440",
+                        "geometrie": {
+                            "coordsys": "WGS84",
+                            "type": "Polygon",
+                            "coordinates": [
+                            [
+                                [ 100.0, 0.0 ],
+                                [ 101.0, 0.0 ],
+                                [ 101.0, 1.0 ],
+                                [ 100.0, 1.0 ],
+                                [ 100.0, 0.0 ]
+                            ],
+                            [
+                                [ 100.8, 0.8 ],
+                                [ 100.8, 0.2 ],
+                                [ 100.2, 0.2 ],
+                                [ 100.2, 0.8 ],
+                                [ 100.8, 0.8 ]
+                            ]
+                            ]
+                        },
+                        "aantal verblijfsobjecten": 2,
+                        "gemiddelde hoogte (BAG3D)": 0,
+                        "geregistreerd totaal bruto vloeroppervlak": 2610,
+                        "geschat aantal etages": 1,
+                        "geschat totaal bruto vloeroppervlak": 2460,
+                        "geschatte hoogte etage": 2,
+                        "grondoppervlak": 2460,
+                        "huishoudensgrootte": 2.2,
+                        "status": "Pand in gebruik",
+                        "verblijfsobjecten": [
+                            {
+                            "verblijfsobjectid": "0402010001618442",
+                            "adres": {
+                                "identificatie": "0402010001618444",
+                                "openbareruimte": "Egelantierstraat",
+                                "huisnummer": 17,
+                                "huisletter": "",
+                                "huisnummertoevoeging": "",
+                                "postcode": "1214EH",
+                                "woonplaatsnaam": "Hilversum"
+                            },
+                            "oppervlakte": 2359,
+                            "verblijfsfuncties": [
+                                {
+                                "oppervlakte": 99,
+                                "functie": "Woonfunctie",
+                                "aantal-personen": 2.4,
+                                "aanvullend": "Woonfunctie gezin",
+                                "aantal-woonunits": 2
+                                },
+                                {
+                                "oppervlakte": 76,
+                                "functie": "Woonfunctie",
+                                "aantal-personen": 2.4,
+                                "aanvullend": "Woonfunctie gezin",
+                                "aantal-woonunits": 1
+                                },
+                                {
+                                "oppervlakte": 99,
+                                "functie": "Gezondheidszorgfunctie",
+                                "aantal-personen": 60,
+                                "aanvullend": "Gezondheidszorgfunctie (kliniek, artsenpraktijk)"
+                                },
+                                {
+                                "oppervlakte": 99,
+                                "functie": "Kinderdagverblijf",
+                                "aantal-personen": 15,
+                                "aanvullend": "Kinderdagverblijf"
+                                }
+                            ]
+                            },
+                            {
+                            "verblijfsobjectid": "0402010001618446",
+                            "adres": {
+                                "identificatie": "0402010001618448",
+                                "openbareruimte": "Egelantierstraat",
+                                "huisnummer": 19,
+                                "huisletter": "",
+                                "huisnummertoevoeging": "",
+                                "postcode": "1214EH",
+                                "woonplaatsnaam": "Hilversum"
+                            },
+                            "oppervlakte": 175,
+                            "verblijfsfuncties": [
+                                {
+                                "oppervlakte": 99,
+                                "functie": "Kinderdagverblijf",
+                                "aantal-personen": 15,
+                                "aanvullend": "Kinderdagverblijf"
+                                },
+                                {
+                                "oppervlakte": 76,
+                                "functie": "Woonfunctie",
+                                "aantal-personen": 2.4,
+                                "aanvullend": "Woonfunctie gezin"
+                                }
+                            ]
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            const origin = 'http://localhost:3000';
+
+            window.addEventListener('message', editToolListener, false);
+
+            function editToolListener(event) {
+                if(event.origin === origin) {
+                    console.log('POPULATIE SERVICE:');
+                    console.log(event);
+                }
+            }
+
+            function test() {
+                const iFrame = document.getElementsByTagName('iframe')[0];
+                iFrame.contentWindow.postMessage(JSON.stringify(json), origin);
+            }
+        </script>
+    </head>
+    <body>
+        <iframe name="iframe" id="iframe_id" src="http://localhost:3000" height="700" width="1000" onload="test();" ></iframe>
+    </body>
+</html>

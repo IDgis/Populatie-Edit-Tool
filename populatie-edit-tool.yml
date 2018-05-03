@@ -8,6 +8,7 @@ services:
       - "80:80"
     environment:
       - ROOT_URL=http://${DOMAIN_PREFIX}.idgis.${DOMAIN_SUFFIX}
+      - METEOR_SETTINGS=${METEOR_SETTINGS}
     networks:
       - populatie-edit
 

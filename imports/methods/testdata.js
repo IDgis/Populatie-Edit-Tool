@@ -1,59 +1,3 @@
-export function getInputJson() {
-    return {
-        "panden": [{
-            "pandid": "0402010001618440",
-            "verblijfsobjecten": [
-                {
-                    "verblijfsobjectid": "0402010001618442",
-                    "adres": {
-                        "identificatie": "0402010001618444",
-                        "openbareruimte": "Egelantierstraat",
-                        "huisnummer": 17,
-                        "huisletter": "",
-                        "huisnummertoevoeging": "",
-                        "postcode": "1214EH",
-                        "woonplaatsnaam": "Hilversum"
-                    },
-                    "oppervlakte": 274,
-                    "verblijfsfuncties": [
-                        {
-                            "oppervlakte": 99,
-                            "functie": "woon",
-                            "aantal-personen": 2.4,
-                            "aanvullend": "Woonfunctie gezin"
-                        },
-                        {
-                            "oppervlakte": 175,
-                            "functie": "gezond",
-                            "aantal-personen": 60,
-                            "aanvullend": ""
-                        }
-                    ]
-                },
-                {
-                    "verblijfsobjectid": "0402010001618446",
-                    "adres": {
-                        "identificatie": "0402010001618448",
-                        "openbareruimte": "Egelantierstraat",
-                        "huisnummer": 19,
-                        "huisletter": "",
-                        "huisnummertoevoeging": "",
-                        "postcode": "1214EH",
-                        "woonplaatsnaam": "Hilversum"
-                    },
-                    "oppervlakte": 175,
-                    "verblijfsfuncties": [{
-                        "oppervlakte": 99,
-                        "functie": "bijeen",
-                        "aantal-personen": 15,
-                        "aanvullend": ""
-                    }]
-                }
-            ]
-        }]
-    }
-}
-
 export function getTabel() {
     return [
         {
@@ -93,7 +37,13 @@ export function getTabel() {
                     "dag": 100,
                     "avond": 100,
                     "nacht": 100
-                },
+                }
+            ]
+        },
+        {
+            "hoofdfunctie BAG": "Kinderdagverblijf",
+            "rekenindicator": "m2 vbo per persoon",
+            "aanvullende functies": [
                 {
                     "functie": "Kinderdagverblijf",
                     "aantal": 10,
@@ -117,18 +67,18 @@ export function getTabel() {
             ]
         },
         {
-            "hoofdfunctie BAG": "Gezondheidsfunctie",
+            "hoofdfunctie BAG": "Gezondheidszorgfunctie",
             "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
-                    "functie": "Gezondheidsfunctie (kliniek, artsenpraktijk)",
+                    "functie": "Gezondheidszorgfunctie (kliniek, artsenpraktijk)",
                     "aantal": 30,
                     "dag": 100,
                     "avond": 0,
                     "nacht": 0
                 },
                 {
-                    "functie": "Gezondheidsfunctie (ziekenhuis en verzorgingshuis)",
+                    "functie": "Gezondheidszorgfunctie (ziekenhuis en verzorgingshuis)",
                     "aantal": 30,
                     "dag": 100,
                     "avond": 100,

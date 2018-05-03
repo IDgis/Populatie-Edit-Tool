@@ -7,7 +7,6 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background-image: url('images/PopulatieService1.png');
 }
 
 #content {
@@ -16,27 +15,35 @@ body {
     overflow: hidden;
 }
 
-#edit-tool-button {
-    position: absolute;
-    top: 133px;
-    left: 751px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 .modal {
     display: block;
+}
+
+.modal-dialog {
+    margin: 0;
 }
 
 .modal-lg {
     width: 1000px;
 }
 
+.modal-header {
+    height: 90px;
+}
+
 .modal-body {
     line-height: 2.0;
-    max-height: 700px;
+    height: 545px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.modal-footer {
+    height: 65px;
+}
+
+#abortButton {
+    float: left;
 }
 
 .pand {
@@ -95,4 +102,16 @@ body {
 .verblijfsfunctie-form input {
     line-height: 1.0;
     width: 60px;
+}
+
+.verblijfsfunctie .panel {
+    margin-right: 15px;
+}
+
+.panel-body input {
+    line-height: 1.0;
+}
+
+.error-message {
+    color: red;
 }
