@@ -24,7 +24,6 @@ export class EditTool extends Component {
      * Listen for incoming Json from the PopulatieService
      */
     populatieServiceListener = (evt) => {
-        console.log(evt);
         if(evt.origin === Meteor.settings.public.originUrl) {
             try {
                 const input = JSON.parse(evt.data);
