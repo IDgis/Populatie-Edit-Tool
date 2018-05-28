@@ -17,7 +17,7 @@ export class VerblijfsFunctie extends Component {
      */
     getVerblijfsfunctie = (verblijfsfunctieData) => {
         return this.props.tabel.filter((entry, i) => (
-            entry['hoofdfunctie BAG'].toLowerCase().indexOf(verblijfsfunctieData['functie'].toLowerCase()) != -1))[0]['hoofdfunctie BAG'];
+            entry['hoofdfunctie BAG'].toLowerCase().indexOf(verblijfsfunctieData['Functie'].toLowerCase()) != -1))[0]['hoofdfunctie BAG'];
     }
 
     /**
@@ -79,7 +79,7 @@ export class VerblijfsFunctie extends Component {
      */
     changeOppervlakte = (evt) => {
         const verblijfsfunctieData = this.state.verblijfsfunctieData;
-        verblijfsfunctieData['oppervlakte'] = parseInt(evt.target.value);
+        verblijfsfunctieData['Oppervlakte'] = parseInt(evt.target.value);
         if(!verblijfsfunctieData.mutaties) {
             verblijfsfunctieData['mutaties'] = 'gewijzigd';
         }
@@ -88,8 +88,8 @@ export class VerblijfsFunctie extends Component {
     }
 
     render() {
-        const oppervlakte = this.state.verblijfsfunctieData['oppervlakte'];
-        const key = this.props.verblijfsobject['verblijfsobjectid'] + '_' + this.props.verblijfsfunctie['functie'] + "_" + this.props.parentKey;
+        const oppervlakte = this.state.verblijfsfunctieData['Oppervlakte'];
+        const key = this.props.verblijfsobject['Identificatie'] + '_' + this.props.verblijfsfunctie['Functie'] + "_" + this.props.parentKey;
 
         return (
             <div className="row verblijfsfunctie">

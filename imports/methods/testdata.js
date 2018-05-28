@@ -67,18 +67,18 @@ export function getTabel() {
             ]
         },
         {
-            "hoofdfunctie BAG": "Gezondheidszorgfunctie",
+            "hoofdfunctie BAG": "Gezondheidsfunctie",
             "rekenindicator": "m2 vbo per persoon",
             "aanvullende functies": [
                 {
-                    "functie": "Gezondheidszorgfunctie (kliniek, artsenpraktijk)",
+                    "functie": "Gezondheidsfunctie (kliniek, artsenpraktijk)",
                     "aantal": 30,
                     "dag": 100,
                     "avond": 0,
                     "nacht": 0
                 },
                 {
-                    "functie": "Gezondheidszorgfunctie (ziekenhuis en verzorgingshuis)",
+                    "functie": "Gezondheidsfunctie (ziekenhuis en verzorgingshuis)",
                     "aantal": 30,
                     "dag": 100,
                     "avond": 100,

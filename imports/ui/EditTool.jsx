@@ -5,8 +5,6 @@ import { Pand } from './Pand';
 import { getTabel } from '../methods/testdata';
 import { calculateOutput } from '../methods/rekenmodule';
 
-import * as queryString from 'query-string';
-
 
 export class EditTool extends Component {
 
@@ -17,6 +15,7 @@ export class EditTool extends Component {
         this.state = {
             input: null,
             output: null,
+            errorMessage: null,
             tabel: getTabel()
         }
     }
@@ -26,9 +25,18 @@ export class EditTool extends Component {
      */
     populatieServiceListener = (evt) => {
         if(evt.origin === Meteor.settings.public.originUrl) {
-            const input = JSON.parse(evt.data);
-            const output = JSON.parse(evt.data);
-            this.setState({input, output});
+            try {
+                const input = JSON.parse(evt.data);
+                const output = JSON.parse(evt.data);
+                let errorMessage = null;
+                if(!input.panden) {
+                    errorMessage = <h2 className="alert alert-danger">Geen panden aanwezig in de input!</h2>;
+                }
+                this.setState({input, output, errorMessage});
+            } catch(e) {
+                const errorMessage = <h2 className="alert alert-danger">Input is geen valide JSON!</h2>;
+                this.setState({errorMessage});
+            }
         }
     }
 
@@ -48,7 +56,7 @@ export class EditTool extends Component {
         evt.preventDefault();
 
         if(!evt.target.classList.contains('disabled')) {
-            this.state.output.status = "ok";
+            this.state.output.status = "OK";
             window.parent.postMessage(JSON.stringify(this.state.output), Meteor.settings.public.targetUrl);
         }
     }
@@ -68,7 +76,7 @@ export class EditTool extends Component {
     }
 
     render() {
-        if(this.state.output) {
+        if(this.state.output && !this.state.errorMessage) {
             const panden = this.state.output.panden.filter(pand => {
                 return (!pand.mutaties || (pand.mutaties && pand.mutaties !== 'verwijderd'));
             });
@@ -82,7 +90,7 @@ export class EditTool extends Component {
                             </div>
                             <div className="modal-body">
                                 {panden.map((pand, index) => (
-                                    <Pand pand={pand} key={pand['pandid']} tabel={this.state.tabel} />
+                                    <Pand pand={pand} key={pand['Identificatie']} tabel={this.state.tabel} />
                                 ))}
                             </div>
                             <div className="modal-footer">
@@ -103,8 +111,10 @@ export class EditTool extends Component {
                     </div>
                 </div>
             );
+        } else if(this.state.errorMessage) {
+            return this.state.errorMessage;
         } else {
-            return <div>Loading Edit Tool...</div>;
+            return <h2 className="alert alert-info">Loading Edit Tool...</h2>;
         }
     }
 }

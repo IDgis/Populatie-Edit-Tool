@@ -1,8 +1,9 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Populatie Service</title>
         <script type="text/javascript">
-            const json = {
+            /*const json = {
                 "refps": "",
                 "datum tijd (UTC)": "",
                 "gebruikernaam": "",
@@ -112,9 +113,176 @@
                         ]
                     }
                 ]
+            };*/
+
+            const json = {
+                "datum tijd (UTC)": "2018-05-28 09:50:54",
+                "gebruikerid": "39f3a811-87fa-4671-a895-dc8f05687478",
+                "gebruikernaam": "kevin.van.den.bosch@idgis.nl",
+                "panden": [{
+                    "Identificatie": "0402100001489040",
+                    "aantal verblijfsobjecten": 5,
+                    "gemiddelde hoogte (BAG3D)": 7,
+                    "geregistreerd totaal bruto vloeroppervlak": 1546,
+                    "geschat aantal etages": 2,
+                    "geschat totaal bruto vloeroppervlak": 2533,
+                    "geschatte hoogte etage": 3,
+                    "grondoppervlak": 1267,
+                    "huishoudensgrootte": 1.9,
+                    "status": "Pand in gebruik (niet ingemeten)",
+                    "verblijfsobjecten": [
+                        {
+                            "Adres": {
+                                "Identificatie": "0402200001627419",
+                                "huisletter": "",
+                                "huisnummer": 1,
+                                "huisnummer-toevoeging": "",
+                                "postcode": "1212ES",
+                                "straat": "Van Linschotenlaan",
+                                "woonplaats": "Hilversum"
+                            },
+                            "Identificatie": "0402010001627394",
+                            "aantal-verblijfsfuncties": 2,
+                            "oppervlakte": 897,
+                            "status": "Verblijfsobject in gebruik (niet ingemeten)",
+                            "verblijfsfuncties": [
+                                {
+                                    "Functie": "gezondheidsfunctie",
+                                    "Oppervlakte": 598,
+                                    "aantal-personen": 19.93,
+                                    "aanvullend": ""
+                                },
+                                {
+                                    "Functie": "kantoorfunctie",
+                                    "Oppervlakte": 299,
+                                    "aantal-personen": 9.97,
+                                    "aanvullend": ""
+                                }
+                            ]
+                        },
+                        {
+                            "Adres": {
+                                "Identificatie": "0402200001627420",
+                                "huisletter": "A",
+                                "huisnummer": 1,
+                                "huisnummer-toevoeging": "",
+                                "postcode": "1212ES",
+                                "straat": "Van Linschotenlaan",
+                                "woonplaats": "Hilversum"
+                            },
+                            "Identificatie": "0402010001627395",
+                            "aantal-verblijfsfuncties": 2,
+                            "oppervlakte": 135,
+                            "status": "Verblijfsobject in gebruik (niet ingemeten)",
+                            "verblijfsfuncties": [
+                                {
+                                    "Functie": "gezondheidsfunctie",
+                                    "Oppervlakte": 90,
+                                    "aantal-personen": 3,
+                                    "aanvullend": ""
+                                },
+                                {
+                                    "Functie": "kantoorfunctie",
+                                    "Oppervlakte": 45,
+                                    "aantal-personen": 1.5,
+                                    "aanvullend": ""
+                                }
+                            ]
+                        },
+                        {
+                            "Adres": {
+                                "Identificatie": "0402200001627421",
+                                "huisletter": "B",
+                                "huisnummer": 1,
+                                "huisnummer-toevoeging": "",
+                                "postcode": "1212ES",
+                                "straat": "Van Linschotenlaan",
+                                "woonplaats": "Hilversum"
+                            },
+                            "Identificatie": "0402010001627396",
+                            "aantal-verblijfsfuncties": 2,
+                            "oppervlakte": 227,
+                            "status": "Verblijfsobject in gebruik (niet ingemeten)",
+                            "verblijfsfuncties": [
+                                {
+                                    "Functie": "gezondheidsfunctie",
+                                    "Oppervlakte": 151,
+                                    "aantal-personen": 5.04,
+                                    "aanvullend": ""
+                                },
+                                {
+                                    "Functie": "kantoorfunctie",
+                                    "Oppervlakte": 76,
+                                    "aantal-personen": 2.52,
+                                    "aanvullend": ""
+                                }
+                            ]
+                        },
+                        {
+                            "Adres": {
+                                "Identificatie": "0402200001627422",
+                                "huisletter": "C",
+                                "huisnummer": 1,
+                                "huisnummer-toevoeging": "",
+                                "postcode": "1212ES",
+                                "straat": "Van Linschotenlaan",
+                                "woonplaats": "Hilversum"
+                            },
+                            "Identificatie": "0402010001627397",
+                            "aantal-verblijfsfuncties": 2,
+                            "oppervlakte": 154,
+                            "status": "Verblijfsobject in gebruik (niet ingemeten)",
+                            "verblijfsfuncties": [
+                                {
+                                    "Functie": "gezondheidsfunctie",
+                                    "Oppervlakte": 103,
+                                    "aantal-personen": 3.42,
+                                    "aanvullend": ""
+                                },
+                                {
+                                    "Functie": "kantoorfunctie",
+                                    "Oppervlakte": 51,
+                                    "aantal-personen": 1.71,
+                                    "aanvullend": ""
+                                }
+                            ]
+                        },
+                        {
+                            "Adres": {
+                                "Identificatie": "0402200001627423",
+                                "huisletter": "D",
+                                "huisnummer": 1,
+                                "huisnummer-toevoeging": "",
+                                "postcode": "1212ES",
+                                "straat": "Van Linschotenlaan",
+                                "woonplaats": "Hilversum"
+                            },
+                            "Identificatie": "0402010001627398",
+                            "aantal-verblijfsfuncties": 2,
+                            "oppervlakte": 133,
+                            "status": "Verblijfsobject in gebruik (niet ingemeten)",
+                            "verblijfsfuncties": [
+                                {
+                                    "Functie": "gezondheidsfunctie",
+                                    "Oppervlakte": 89,
+                                    "aantal-personen": 2.96,
+                                    "aanvullend": ""
+                                },
+                                {
+                                    "Functie": "kantoorfunctie",
+                                    "Oppervlakte": 44,
+                                    "aantal-personen": 1.48,
+                                    "aanvullend": ""
+                                }
+                            ]
+                        }
+                    ]
+                }],
+                "refps": 129,
+                "status": "OK"
             };
 
-            const origin = 'http://localhost:3000';
+            const origin = 'http://192.168.99.100';
 
             window.addEventListener('message', editToolListener, false);
 
@@ -132,6 +300,6 @@
         </script>
     </head>
     <body>
-        <iframe name="iframe" id="iframe_id" src="http://localhost:3000" height="700" width="1000" onload="test();" ></iframe>
+        <iframe name="iframe" id="iframe_id" src="http://192.168.99.100" height="700" width="1000" onload="test();" ></iframe>
     </body>
 </html>
