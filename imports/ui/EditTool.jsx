@@ -24,6 +24,7 @@ export class EditTool extends Component {
      * Listen for incoming Json from the PopulatieService
      */
     populatieServiceListener = (evt) => {
+        console.log(evt);
         if(evt.origin === Meteor.settings.public.originUrl) {
             try {
                 const input = JSON.parse(evt.data);
@@ -56,7 +57,7 @@ export class EditTool extends Component {
         evt.preventDefault();
 
         if(!evt.target.classList.contains('disabled')) {
-            this.state.output.status = "ok";
+            this.state.output.status = "OK";
             window.parent.postMessage(JSON.stringify(this.state.output), Meteor.settings.public.targetUrl);
         }
     }
@@ -90,7 +91,7 @@ export class EditTool extends Component {
                             </div>
                             <div className="modal-body">
                                 {panden.map((pand, index) => (
-                                    <Pand pand={pand} key={pand['pandid']} tabel={this.state.tabel} />
+                                    <Pand pand={pand} key={pand['Identificatie']} tabel={this.state.tabel} />
                                 ))}
                             </div>
                             <div className="modal-footer">

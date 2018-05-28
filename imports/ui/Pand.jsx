@@ -33,14 +33,14 @@ export class Pand extends Component {
                 "verblijfsobjectid": "",
                 verblijfsfuncties: [],
                 oppervlakte: 0,
-                adres: {
-                    "identificatie": "",
-                    "openbareruimte": straat,
+                Adres: {
+                    "Identificatie": "",
+                    "straat": straat,
                     "huisnummer": nr,
                     "huisletter": "",
-                    "huisnummertoevoeging": "",
+                    "huisnummer-toevoeging": "",
                     "postcode": postcode,
-                    "woonplaatsnaam": plaats
+                    "woonplaats": plaats
                 },
                 mutaties: "toegevoegd"
             }
@@ -77,11 +77,11 @@ export class Pand extends Component {
 
         const pand = this.state.pand;
         const dubbelePanden = pand.verblijfsobjecten.filter(verblijfsobject => {
-            const adres = verblijfsobject.adres;
-            return (adres.openbareruimte.toLowerCase() == straat.toLowerCase() &&
+            const adres = verblijfsobject.Adres;
+            return (adres.straat.toLowerCase() == straat.toLowerCase() &&
                     adres.huisnummer == nr &&
                     adres.postcode.toLowerCase() == postcode.toLowerCase() &&
-                    adres.woonplaatsnaam.toLowerCase() == plaats.toLowerCase());
+                    adres.woonplaats.toLowerCase() == plaats.toLowerCase());
         });
 
         if(dubbelePanden.length > 0) {
@@ -120,8 +120,8 @@ export class Pand extends Component {
         });
 
         return (
-            <div className="row pand" key={pand['pandid']}>
-                <h3>Pand {pand['pandid']}</h3>
+            <div className="row pand" key={pand['Identificatie']}>
+                <h3>Pand {pand['Identificatie']}</h3>
                 <div className="row">
                     <div className="col-xs-4">Aantal verblijfsobjecten</div>
                     <div className="col-xs-8">{pand['aantal verblijfsobjecten']}</div>
@@ -160,7 +160,7 @@ export class Pand extends Component {
                 </div>
                 {verblijfsobjecten.map((verblijfsobject, index) => (
                     <VerblijfsObject 
-                        key={verblijfsobject['verblijfsobjectid']} 
+                        key={verblijfsobject['Identificatie'] + index} 
                         verblijfsobject={verblijfsobject} 
                         pand={pand}
                         tabel={this.props.tabel} 

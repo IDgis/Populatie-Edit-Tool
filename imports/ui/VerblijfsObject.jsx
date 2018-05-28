@@ -15,7 +15,7 @@ export class VerblijfsObject extends Component {
 
     componentDidMount = () => {
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
-        const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties'].map(functie => functie['functie']);
+        const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties'].map(functie => functie['Functie']);
 
         // Toggle the abillity to add verblijfsfuncties
         if(allHoofdfuncties.length == verblijfsfuncties.length && this.state.addButtonVisible) {
@@ -28,7 +28,7 @@ export class VerblijfsObject extends Component {
 
     componentDidUpdate = () => {
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
-        const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties'].map(functie => functie['functie']);
+        const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties'].map(functie => functie['Functie']);
 
         // Toggle the abillity to add verblijfsfuncties
         if(allHoofdfuncties.length == verblijfsfuncties.length && this.state.addButtonVisible) {
@@ -45,7 +45,7 @@ export class VerblijfsObject extends Component {
     getAddBagFunctie = () => {
         const verblijfsfuncties = this.state.verblijfsobject['verblijfsfuncties']
             .filter(functie => (!functie.mutaties || (functie.mutaties && functie.mutaties !== 'verwijderd')))
-            .map(functie => functie['functie']);
+            .map(functie => functie['Functie']);
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
 
         // Check which BAG functie aren't used yet.
@@ -82,8 +82,8 @@ export class VerblijfsObject extends Component {
         const verblijfsfunctie = {
             "aantal-personen": 0,
             "aanvullend": "",
-            "functie": selectedBagFunctie,
-            "oppervlakte": parseFloat(selectedOppervlakte),
+            "Functie": selectedBagFunctie,
+            "Oppervlakte": parseFloat(selectedOppervlakte),
             "mutaties": "toegevoegd"
         }
         vbo['verblijfsfuncties'].push(verblijfsfunctie);
@@ -130,7 +130,7 @@ export class VerblijfsObject extends Component {
      */
     changeOppervlakte = (evt) => {
         const verblijfsobject = this.state.verblijfsobject;
-        verblijfsobject['oppervlakte'] = parseFloat(evt.target.value);
+        verblijfsobject['Oppervlakte'] = parseFloat(evt.target.value);
         if(!verblijfsobject.mutaties) {
             verblijfsobject['mutaties'] = 'gewijzigd';
         }
@@ -144,11 +144,12 @@ export class VerblijfsObject extends Component {
 
     render() {
         const verblijfsobject = this.state.verblijfsobject;
-        const straat = verblijfsobject.adres.openbareruimte;
-        const huisnr = verblijfsobject.adres.huisnummer;
-        const huisltr = verblijfsobject.adres.huisletter;
-        const postcode = verblijfsobject.adres.postcode;
-        const woonplaats = verblijfsobject.adres.woonplaatsnaam;
+        const straat = verblijfsobject.Adres.straat;
+        const huisnr = verblijfsobject.Adres.huisnummer;
+        const huisltr = verblijfsobject.Adres.huisletter;
+        const huisnrtoev = verblijfsobject.Adres['huisnummer-toevoeging'];
+        const postcode = verblijfsobject.Adres.postcode;
+        const woonplaats = verblijfsobject.Adres.woonplaats;
 
         const verblijfsfuncties = verblijfsobject.verblijfsfuncties.filter(verblijfsfunctie => {
             return (!verblijfsfunctie.mutaties || (verblijfsfunctie.mutaties && verblijfsfunctie.mutaties !== 'verwijderd'));
@@ -157,19 +158,23 @@ export class VerblijfsObject extends Component {
         return (
             <div className="row verblijfsobject">
                 <div className="panel panel-primary">
-                    <div className="panel-heading" id={`heading${verblijfsobject['verblijfsobjectid']}`}>
-                        <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${verblijfsobject['verblijfsobjectid']}`} aria-expanded="false" aria-controls={`collapse${verblijfsobject['verblijfsobjectid']}`}>
-                            Verblijfsobject: {`${straat} ${huisnr}${huisltr}, ${postcode} ${woonplaats}`}   
+                    <div className="panel-heading" id={`heading${verblijfsobject['Identificatie']}`}>
+                        <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${verblijfsobject['Identificatie']}`} aria-expanded="false" aria-controls={`collapse${verblijfsobject['Identificatie']}`}>
+                            Verblijfsobject: {`${straat} ${huisnr}${huisltr}${huisnrtoev}, ${postcode} ${woonplaats}`}   
                             <button type="button" className="btn btn-danger btn-xs" title="Verwijder verblijfsobject" onClick={this.removeVerblijfsObject.bind(this)} >
                                 <span className="glyphicon glyphicon-minus"></span>
                             </button>                         
                         </h4>
                     </div>
-                    <div id={`collapse${verblijfsobject['verblijfsobjectid']}`} className="collapse" aria-labelledby={`heading${verblijfsobject['verblijfsobjectid']}`}>
+                    <div id={`collapse${verblijfsobject['Identificatie']}`} className="collapse" aria-labelledby={`heading${verblijfsobject['Identificatie']}`}>
                         <div className="panel-body">
                             <div className="row">
                                 <div className="col-xs-2">Verblijfsobjectid</div>
-                                <div className="col-xs-10">{verblijfsobject['verblijfsobjectid']}</div>
+                                <div className="col-xs-10">{verblijfsobject['Identificatie']}</div>
+                            </div>
+                            <div className="row">
+                                <div className="col-xs-2">Status</div>
+                                <div className="col-xs-10">{verblijfsobject['status']}</div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-2">Oppervlakte</div>
@@ -180,10 +185,10 @@ export class VerblijfsObject extends Component {
                                     <VerblijfsFunctie 
                                         verblijfsfunctie={verblijfsfunctie} 
                                         index={index}
-                                        key={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index + '_' + verblijfsfunctie['oppervlakte']} 
+                                        key={verblijfsobject['Identificatie'] + '_' + verblijfsfunctie['Functie'] + '_' + index + '_' + verblijfsfunctie['Oppervlakte']} 
                                         tabel={this.props.tabel} verblijfsobject={this.state.verblijfsobject}
                                         removeVerblijfsfunctie={this.removeVerblijfsfunctie.bind(this)}
-                                        parentKey={verblijfsobject['verblijfsobjectid'] + '_' + verblijfsfunctie['functie'] + '_' + index}
+                                        parentKey={verblijfsobject['Identificatie'] + '_' + verblijfsfunctie['Functie'] + '_' + index}
                                     />
                                 ))}
                             </div>
