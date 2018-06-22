@@ -69,6 +69,11 @@ body {
     padding-left: 5px;
 }
 
+.alert-error-message {
+    width: 475px;
+    margin-left: 10px;
+}
+
 .verblijfsobject-form {
     line-height: 1.5
 }
