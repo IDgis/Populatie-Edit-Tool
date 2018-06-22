@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
 import { VerblijfsFunctie } from './VerblijfsFunctie';
 
@@ -142,6 +143,17 @@ export class VerblijfsObject extends Component {
         this.setState({verblijfsobject});
     }
 
+    scrollToExpanded = (evt) => {
+        if(evt.target.attributes['aria-expanded'] && evt.target.attributes['aria-expanded'].value === "true") {
+            const container = evt.target.parentNode.parentNode;
+            container.scrollIntoView({
+                behavior: 'smooth', // auto  | instant | smooth.          Default: auto
+                block: 'start',     // start | center  | end   | nearest. Default: center
+                inline: 'nearest'   // start | center  | end   | nearest. Default: nearest
+            });
+        }
+    }
+
     render() {
         const verblijfsobject = this.state.verblijfsobject;
         const straat = verblijfsobject.Adres.straat;
@@ -158,7 +170,7 @@ export class VerblijfsObject extends Component {
         return (
             <div className="row verblijfsobject">
                 <div className="panel panel-primary">
-                    <div className="panel-heading" id={`heading${verblijfsobject['Identificatie']}`}>
+                    <div className="panel-heading" id={`heading${verblijfsobject['Identificatie']}`} onClick={this.scrollToExpanded.bind(this)}>
                         <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${verblijfsobject['Identificatie']}`} aria-expanded="false" aria-controls={`collapse${verblijfsobject['Identificatie']}`}>
                             Verblijfsobject: {`${straat} ${huisnr}${huisltr}${huisnrtoev}, ${postcode} ${woonplaats}`}   
                             <button type="button" className="btn btn-danger btn-xs" title="Verwijder verblijfsobject" onClick={this.removeVerblijfsObject.bind(this)} >
