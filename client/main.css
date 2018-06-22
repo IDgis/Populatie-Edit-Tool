@@ -7,6 +7,7 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    background-color: rgba(255,255,255,0);
 }
 
 #content {
@@ -68,12 +69,23 @@ body {
     padding-left: 5px;
 }
 
+.alert-error-message {
+    width: 475px;
+    margin-left: 10px;
+}
+
 .verblijfsobject-form {
-    line-height: 1.0;
+    line-height: 1.5
+}
+
+.verblijfsobject-form .row {
+    margin-top: 0px;
+    margin-bottom: 5px;
 }
 
 .verblijfsobject-form button {
     font-size: 10px;
+    margin-left: 10px;
 }
 
 .verblijfsobject-form input {
@@ -110,6 +122,10 @@ body {
 
 .panel-body input {
     line-height: 1.0;
+}
+
+.scroll-space {
+    height: 80px;
 }
 
 .error-message {

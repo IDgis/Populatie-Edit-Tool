@@ -23,9 +23,10 @@ export function calculateOutput(input, table) {
  * @param {Object} table The table with all BAG data
  */
 function calculcateVerblijfsobjecten(pand, table) {
+    const huishoudensgrootte = pand['huishoudensgrootte'];
     return pand['verblijfsobjecten'].map(verblijfsobject => {
         if(!(verblijfsobject.mutaties && verblijfsobject.mutaties === 'verwijderd')) {
-            const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table);
+            const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte);
 
             verblijfsobject['verblijfsfuncties'] = verblijfsfuncties;
         }
@@ -38,8 +39,9 @@ function calculcateVerblijfsobjecten(pand, table) {
  * 
  * @param {Object} verblijfsobject The verblijfsobject within the Pand JSON
  * @param {Object} table The table with all BAG data
+ * @param {Number} huishoudensgrootte The huishoudensgrootte to calculate
  */
-function calculateVerblijfsfuncties(verblijfsobject, table) {
+function calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte) {
     return verblijfsobject['verblijfsfuncties'].map(verblijfsfunctie => {
         if(!(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'verwijderd')) {
             const hoofdfunctieObject = getHoofdfunctieObject(verblijfsfunctie, table);
@@ -49,7 +51,7 @@ function calculateVerblijfsfuncties(verblijfsobject, table) {
             const rekenIndicator = hoofdfunctieObject['rekenindicator'];
             const oppervlakte = verblijfsfunctie['Oppervlakte']
             const rekenObject = aanvullendeIndelingen.filter(indeling => indeling['functie'] === aanvullendeIndeling)[0];
-            const numPersons = calculateNumPersons(rekenIndicator, oppervlakte, rekenObject, verblijfsobject);
+            const numPersons = calculateNumPersons(rekenIndicator, oppervlakte, rekenObject, verblijfsobject, huishoudensgrootte);
 
             if(verblijfsfunctie['aantal-personen'] !== parseFloat(numPersons) &&
                     !(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'toegevoegd')) {
@@ -82,11 +84,14 @@ function getHoofdfunctieObject(verblijfsfunctie, table) {
  * @param {Number} opp The oppervlakte of the verblijfsfunctie
  * @param {Object} indelingObject The aanvullende indelingen object from the BAG data tabel
  * @param {Object} verblijfsobject The Verblijfsobject that contains the Verblijfsfunctie to be calculated
+ * @param {Number} huishoudensgrootte The huishoudensgrootte to calculate
  */
-function calculateNumPersons(rekenindicator, opp, indelingObject, verblijfsobject) {
+function calculateNumPersons(rekenindicator, opp, indelingObject, verblijfsobject, huishoudensgrootte) {
     const aantal = indelingObject['aantal'];
 
-    if(rekenindicator === "personen per vbo" && typeof aantal === 'number') {
+    if(indelingObject["functie"] === "Woonfunctie gezin" && huishoudensgrootte > 0.0) {
+        return huishoudensgrootte;
+    } else if(rekenindicator === "personen per vbo" && typeof aantal === 'number') {
         return aantal;
     } else if(rekenindicator === "m2 vbo per persoon" && typeof aantal === 'number') {
         return (opp / aantal).toFixed(2);

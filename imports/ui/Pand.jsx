@@ -25,8 +25,9 @@ export class Pand extends Component {
         if(valid) {
             const pand = this.state.pand;
 
-            const straat = evt.target[1].value;
-            const nr = evt.target[2].value;
+            const straat = evt.target[0].value;
+            const nr = evt.target[1].value;
+            const letter = evt.target[2].value;
             const postcode = evt.target[3].value;
             const plaats = evt.target[4].value;
             const vbo = {
@@ -37,7 +38,7 @@ export class Pand extends Component {
                     "Identificatie": "",
                     "straat": straat,
                     "huisnummer": nr,
-                    "huisletter": "",
+                    "huisletter": letter,
                     "huisnummer-toevoeging": "",
                     "postcode": postcode,
                     "woonplaats": plaats
@@ -46,6 +47,7 @@ export class Pand extends Component {
             }
             pand['verblijfsobjecten'].push(vbo);
 
+            evt.target[0].value = "";
             evt.target[1].value = "";
             evt.target[2].value = "";
             evt.target[3].value = "";
@@ -63,14 +65,15 @@ export class Pand extends Component {
      * Validate the created 'Verblijfsobject' and show an error message if invalid
      */
     validateVerblijfsObject = (evt) => {
-        const straat = evt.target[1].value;
-        const nr = evt.target[2].value;
+        const straat = evt.target[0].value;
+        const nr = evt.target[1].value;
+        const letter = evt.target[2].value;
         const postcode = evt.target[3].value.replace(" ", "");
         const plaats = evt.target[4].value;
 
         if(!(straat && nr && postcode && plaats)) {
             this.setState({
-                errorMessage: <div className="alert alert-danger">Niet alle velden zijn ingevuld!</div>
+                errorMessage: <div className="alert alert-danger alert-error-message">Niet alle velden zijn ingevuld!</div>
             });
             return false;
         }
@@ -80,13 +83,14 @@ export class Pand extends Component {
             const adres = verblijfsobject.Adres;
             return (adres.straat.toLowerCase() == straat.toLowerCase() &&
                     adres.huisnummer == nr &&
+                    adres.huisletter == letter &&
                     adres.postcode.toLowerCase() == postcode.toLowerCase() &&
                     adres.woonplaats.toLowerCase() == plaats.toLowerCase());
         });
 
         if(dubbelePanden.length > 0) {
             this.setState({
-                errorMessage: <div className="alert alert-danger">Verblijfsobject bestaat al!</div>
+                errorMessage: <div className="alert alert-danger alert-error-message">Verblijfsobject bestaat al!</div>
             });
             return false;
         } else {
@@ -168,18 +172,47 @@ export class Pand extends Component {
                     />
                 ))}
                 <div className="row verblijfsobject-add">
-                <strong><em>Voeg Verblijfsobject toe</em></strong>
-                <form className="verblijfsobject-form" onSubmit={this.addVerblijfsobject.bind(this)} >
-                    <button type="submit" className="btn btn-success btn-xs" title="Voeg verblijfsobject toe">
-                        <span className="glyphicon glyphicon-plus"></span>
-                    </button>
-                    <input type="text" name="straat" placeholder="Straat" />
-                    <input type="text" name="nummer" placeholder="Nr" />
-                    <input type="text" name="postcode" placeholder="Postcode" />
-                    <input tpye="text" name="plaats" placeholder="Plaats" />
-                </form>
-                {this.state.errorMessage}
-            </div>
+                    <strong><em>Voeg Verblijfsobject toe</em></strong>
+                    <form className="verblijfsobject-form" onSubmit={this.addVerblijfsobject.bind(this)} >
+                        <div className="row">
+                            <div className="form-group">
+                                <label className="col-xs-2" htmlFor="inputStraat">Straat: </label>
+                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="form-group">
+                                <label className="col-xs-2" htmlFor="inputNr">Huisnummer: </label>
+                                <input className="col-xs-4" type="number" id="inputNr" name="nummer" placeholder="Huisnummer" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="form-group">
+                                <label className="col-xs-2" htmlFor="inputLetter">Huisletter: </label>
+                                <input className="col-xs-4" type="text" id="inputLetter" name="nummer" placeholder="Huisletter" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="form-group">
+                                <label className="col-xs-2" htmlFor="inputPostcode">Postcode: </label>
+                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="form-group">
+                                <label className="col-xs-2" htmlFor="inputPlaats">Plaats: </label>
+                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" />
+                            </div>
+                        </div>
+                        <div className="row">
+                            {this.state.errorMessage}
+                            <button type="submit" className="btn btn-success btn-sm col-xs-6" title="Voeg verblijfsobject toe">
+                                <span className="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div className="scroll-space"></div>
             </div>
         );
     }

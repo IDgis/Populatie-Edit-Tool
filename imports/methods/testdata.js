@@ -212,7 +212,7 @@ export function getTabel() {
                     "nacht": 0
                 }
             ]
-        },
+        }/*,
         {
             "hoofdfunctie BAG": "Gerealiseerde evenemententerreinen",
             "rekenindicator": "m2 vbo per persoon",
@@ -238,6 +238,6 @@ export function getTabel() {
                     "nacht": 0
                 }
             ]
-        }
+        }*/
     ]
 }
