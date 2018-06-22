@@ -87,6 +87,20 @@ export class VerblijfsFunctie extends Component {
         this.setState({verblijfsfunctieData});
     }
 
+    /**
+     * Scroll automatically when the Verblijfsfunctie container is expanded
+     */
+    scrollToExpanded = (evt) => {
+        if(evt.target.attributes['aria-expanded'] && evt.target.attributes['aria-expanded'].value === "true") {
+            const container = evt.target.parentNode.parentNode;
+            container.scrollIntoView({
+                behavior: 'smooth', // auto  | instant | smooth.          Default: auto
+                block: 'center',     // start | center  | end   | nearest. Default: center
+                inline: 'nearest'   // start | center  | end   | nearest. Default: nearest
+            });
+        }
+    }
+
     render() {
         const oppervlakte = this.state.verblijfsfunctieData['Oppervlakte'];
         const key = this.props.verblijfsobject['Identificatie'] + '_' + this.props.verblijfsfunctie['Functie'] + "_" + this.props.parentKey;
@@ -94,7 +108,7 @@ export class VerblijfsFunctie extends Component {
         return (
             <div className="row verblijfsfunctie">
                 <div className="panel panel-info">
-                    <div className="panel-heading" id={`heading${key}`}>
+                    <div className="panel-heading" id={`heading${key}`} onClick={this.scrollToExpanded.bind(this)}>
                         <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${key}`} aria-expanded="false" aria-controls={`collapse${key}`}>
                             Verblijfsfunctie: {this.state.verblijfsfunctie}
                             <button type="button" className="btn btn-danger btn-xs" title="Verwijder verblijfsfunctie" onClick={this.removeVerblijfsfunctie.bind(this)} >

@@ -143,6 +143,9 @@ export class VerblijfsObject extends Component {
         this.setState({verblijfsobject});
     }
 
+    /**
+     * Scroll automatically when the Verblijfsobject container is expanded
+     */
     scrollToExpanded = (evt) => {
         if(evt.target.attributes['aria-expanded'] && evt.target.attributes['aria-expanded'].value === "true") {
             const container = evt.target.parentNode.parentNode;
