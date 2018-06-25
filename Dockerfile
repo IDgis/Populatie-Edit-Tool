@@ -22,10 +22,6 @@ RUN cd /home/meteorapp/app \
 
 RUN npm install -g forever
 
-EXPOSE 3000
-ENV PORT 3000
-
-RUN useradd -M --uid 3000 --shell /bin/false meteor
 USER meteor
 
 CMD ["forever", "--minUpTime", "1000", "--spinSleepTime", "1000", "build/bundle/main.js"]
