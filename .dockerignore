@@ -1,2 +1,4 @@
 .meteor/local/
 .git/
+node_modules/
+imports/iframe-demo/
