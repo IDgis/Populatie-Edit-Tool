@@ -1,8 +1,31 @@
-FROM abernix/meteord:node-8.9.1-base
+FROM idgis/meteor:1.7
 MAINTAINER IDgis bv
 
-COPY ./ /app
-COPY pop_edit.sh $METEORD_DIR/lib
+RUN mkdir /home/meteorapp
+WORKDIR /home/meteorapp
 
-RUN bash $METEORD_DIR/lib/install_meteor.sh
-RUN bash $METEORD_DIR/lib/pop_edit.sh
+ADD . ./app
+
+RUN cd /home/meteorapp/app \
+    && meteor npm install --production \
+    && meteor build ../build --directory --allow-superuser \
+    # ----------------------------------------------
+    && cd /home/meteorapp/build/bundle/programs/server \
+    && npm install \
+    # ----------------------------------------------
+    # Get rid of Meteor. We're done with it.
+    && rm /usr/local/bin/meteor \
+    && rm -rf ~/.meteor \
+    # ----------------------------------------------
+    # Clean up installed dependencies we no longer need.
+    && /cleanup.sh
+
+RUN npm install -g forever
+
+EXPOSE 3000
+ENV PORT 3000
+
+RUN useradd -M --uid 3000 --shell /bin/false meteor
+USER meteor
+
+CMD ["forever", "--minUpTime", "1000", "--spinSleepTime", "1000", "build/bundle/main.js"]
