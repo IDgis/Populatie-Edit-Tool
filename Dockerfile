@@ -24,4 +24,4 @@ RUN npm install -g forever
 
 USER meteor
 
-CMD ["forever", "--minUpTime", "1000", "--spinSleepTime", "1000", "build/bundle/main.js"]
+CMD ["forever", "--minUptime", "1000", "--spinSleepTime", "1000", "build/bundle/main.js"]

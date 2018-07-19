@@ -65,7 +65,7 @@ export class VerblijfsObject extends Component {
                     <select>
                         {available.map((functie, i) => (<option key={functie + "_" + i}>{functie}</option>))}
                     </select>
-                    <input type="number" defaultValue="50" />m2
+                    <input type="number" min="0" defaultValue="50" />m2
                 </form>
             </div>
         );
@@ -192,7 +192,7 @@ export class VerblijfsObject extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-xs-2">Oppervlakte</div>
-                                <div className="col-xs-10"><input type="number" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>
+                                <div className="col-xs-10"><input type="number" min="0" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>
                             </div>
                             <div className="row">
                                 {verblijfsfuncties.map((verblijfsfunctie, index) => (
