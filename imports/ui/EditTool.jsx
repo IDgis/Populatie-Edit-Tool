@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 
+import { HelpPage } from './HelpPage';
 import { Pand } from './Pand';
 import { getTabel } from '../methods/testdata';
 import { calculateOutput } from '../methods/rekenmodule';
@@ -16,6 +17,7 @@ export class EditTool extends Component {
             input: null,
             output: null,
             errorMessage: null,
+            helpOpen: false,
             tabel: getTabel()
         }
     }
@@ -75,39 +77,56 @@ export class EditTool extends Component {
         this.setState({output});
     }
 
+    /**
+     * Toggle the help state to open and close the help screen.
+     */
+    toggleHelp = (openState, evt) => {
+        evt.preventDefault();
+
+        this.setState({helpOpen: openState});
+    }
+
     render() {
         if(this.state.output && !this.state.errorMessage) {
             const panden = this.state.output.panden.filter(pand => {
                 return (!pand.mutaties || (pand.mutaties && pand.mutaties !== 'verwijderd'));
             });
 
+            const modalContent = this.state.helpOpen ? <HelpPage toggleHelp={this.toggleHelp.bind(this, false)} /> :
+                <div className="modal-content" modal-transclude="">
+                    <div className="modal-header">
+                        <h2>Populatie Edit Tool</h2>
+                    </div>
+                    <div className="modal-body">
+                        {panden.map((pand, index) => (
+                            <Pand pand={pand} key={pand['Identificatie']} tabel={this.state.tabel} />
+                        ))}
+                    </div>
+                    <div className="modal-footer">
+                        <button className="btn btn-info" type="button" onClick={this.calculateResult.bind(this)}>
+                            <span className="glyphicon glyphicon-list-alt"></span>&nbsp;
+                            Rekenen
+                        </button>
+                        <button id="saveButton" className="btn btn-success disabled" type="button" onClick={this.saveValues.bind(this)}>
+                            <span className="glyphicon glyphicon-download"></span>&nbsp;
+                            Bewaren
+                        </button>
+                        <button id="abortButton" className="btn btn-danger" type="button" onClick={this.abort.bind(this)}>
+                            <span className="glyphicon glyphicon-ban-circle"></span>&nbsp;
+                            Afbreken
+                        </button>
+                        <button id="helpButton" className="btn btn-info" type="button" onClick={this.toggleHelp.bind(this, true)}>
+                            <span className="glyphicon glyphicon-question-sign"></span>&nbsp;
+                            Help
+                        </button>
+                    </div>
+                </div>
+            ;
+
             return(
                 <div className="modal fade in" modal-render="true" tabIndex="-1" role="dialog" modal-animation-class="fade" modal-window="modal-window" index="0" modal-animation="true">
                     <div className="modal-dialog modal-lg">
-                        <div className="modal-content" modal-transclude="">
-                            <div className="modal-header">
-                                <h2>Populatie Edit Tool</h2>
-                            </div>
-                            <div className="modal-body">
-                                {panden.map((pand, index) => (
-                                    <Pand pand={pand} key={pand['Identificatie']} tabel={this.state.tabel} />
-                                ))}
-                            </div>
-                            <div className="modal-footer">
-                                <button className="btn btn-info" type="button" onClick={this.calculateResult.bind(this)}>
-                                    <span className="glyphicon glyphicon-list-alt"></span>&nbsp;
-                                    Rekenen
-                                </button>
-                                <button id="saveButton" className="btn btn-success disabled" type="button" onClick={this.saveValues.bind(this)}>
-                                    <span className="glyphicon glyphicon-download"></span>&nbsp;
-                                    Bewaren
-                                </button>
-                                <button id="abortButton" className="btn btn-danger" type="button" onClick={this.abort.bind(this)}>
-                                    <span className="glyphicon glyphicon-ban-circle"></span>&nbsp;
-                                    Afbreken
-                                </button>
-                            </div>
-                        </div>
+                        {modalContent}
                     </div>
                 </div>
             );
