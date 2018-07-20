@@ -192,7 +192,8 @@ export class VerblijfsObject extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-xs-2">Oppervlakte</div>
-                                <div className="col-xs-10"><input type="number" min="0" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>
+                                <div className="col-xs-10">{verblijfsobject['oppervlakte']} m2</div>
+                                {/*<div className="col-xs-10"><input type="number" min="0" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>*/}
                             </div>
                             <div className="row">
                                 {verblijfsfuncties.map((verblijfsfunctie, index) => (
