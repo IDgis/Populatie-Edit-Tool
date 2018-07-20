@@ -27,13 +27,7 @@ function calculcateVerblijfsobjecten(pand, table) {
     return pand['verblijfsobjecten'].map(verblijfsobject => {
         if(!(verblijfsobject.mutaties && verblijfsobject.mutaties === 'verwijderd')) {
             const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte);
-            const totalArea = verblijfsfuncties.reduce((prev, curr) => {
-                if(typeof prev === 'object') {
-                    return prev['Oppervlakte'] + curr['Oppervlakte'];
-                } else {
-                    return prev + curr['Oppervlakte'];
-                }
-            });
+            const totalArea = calculateVerblijfsObjectArea(verblijfsfuncties);
 
             verblijfsobject['verblijfsfuncties'] = verblijfsfuncties;
             verblijfsobject['oppervlakte'] = totalArea;
@@ -117,4 +111,45 @@ function calculateNumPersons(rekenindicator, opp, indelingObject, verblijfsobjec
         const maatwerk = prompt(maatwerkText);
         return maatwerk ? maatwerk : 0;
     }
+}
+
+/**
+ * Calculate the total oppervlakte for a Verblijfsobject based on all oppervlaktes of the Verblijfsfuncties
+ * 
+ * @param {Array} verblijfsfuncties An array of all Verblijfsfuncties for a Verblijfsobject
+ */
+function calculateVerblijfsObjectArea(verblijfsfuncties) {
+    return verblijfsfuncties.reduce((prevFunctie, curFunctie) => {
+        if(isVerblijfsfunctiePresent(prevFunctie)) {
+            // First verblijfsfunctie is present. Check if it isn't a return value from the previous calculation
+            if(typeof prevFunctie === 'object') {
+                // Check if the second verblijfsfunctie is present
+                if(isVerblijfsfunctiePresent(curFunctie)) {
+                    return prevFunctie['Oppervlakte'] + curFunctie['Oppervlakte'];
+                } else {
+                    return prevFunctie['Oppervlakte'];
+                }
+            } else if(isVerblijfsfunctiePresent(curFunctie)) {
+                // First verblijfsfunctie is a number. Check the second one
+                return prevFunctie + curFunctie['Oppervlakte'];
+            } else {
+                return prevFunctie;
+            }
+        } else if(isVerblijfsfunctiePresent(curFunctie)) {
+            // First verblijfsfunctie is removed. Return area of second verblijfsfunctie
+            return curFunctie['Oppervlakte'];
+        } else {
+            // No verblijfsfuncties present
+            return 0;
+        }
+    });
+}
+
+/**
+ * Check whether a verblijfsfunctie isn't removed from a verblijfsobject
+ * 
+ * @param {Object} functie The verblijfsfunctie to check
+ */
+function isVerblijfsfunctiePresent(functie) {
+    return (!functie.mutaties || (functie.mutaties && functie.mutaties !== 'verwijderd'));
 }
