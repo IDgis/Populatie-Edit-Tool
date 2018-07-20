@@ -34,6 +34,23 @@ export class HelpPage extends Component {
 							</li>
 						</ul>
 						<p>Als u aanpassingen doet moet u het resultaat eerst laten doorrekenen via de knop <strong>Rekenen.</strong> U kunt de aanpassingen vervolgens opslaan door te klikken op de knop <strong>Bewaren</strong> of u kunt annuleren (knop <strong>Afbreken</strong>).</p>
+						
+						<h3>Verblijfsobject toevoegen:</h3>
+						<p>Onder alle verblijfsobjecten vind u een formulier waarin u verblijfsobjecten toe kunt voegen:</p>
+						<ul>
+							<li>
+								<p>ieder verblijfsobject dient een uniek adres te hebben</p>
+							</li>
+							<li>
+								<p>het veld <strong>huisletter</strong> is optioneel. De overige velden moeten worden ingevuld</p>
+							</li>
+							<li>
+								<p>het <strong>verblijfsobjectId</strong> kan niet worden opgegeven, aangezien deze er nog niet is</p>
+							</li>
+							<li>
+								<p>zodra alle velden naar wens zijn ingevuld drukt op op het <strong>plusje</strong> om een verblijfsobject toe te voegen. Deze kunt u vervolgens aanpassen</p>
+							</li>
+						</ul>
 						<h3>Verblijfsobject aanpassen:</h3>
 						<p>Klik op het <strong>verblijfsobject</strong>, zodat de eigenschappen van het object worden weergegeven.</p>
 						<p>U kunt vervolgens:</p>
