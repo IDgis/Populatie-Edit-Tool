@@ -27,8 +27,16 @@ function calculcateVerblijfsobjecten(pand, table) {
     return pand['verblijfsobjecten'].map(verblijfsobject => {
         if(!(verblijfsobject.mutaties && verblijfsobject.mutaties === 'verwijderd')) {
             const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte);
+            const totalArea = verblijfsfuncties.reduce((prev, curr) => {
+                if(typeof prev === 'object') {
+                    return prev['Oppervlakte'] + curr['Oppervlakte'];
+                } else {
+                    return prev + curr['Oppervlakte'];
+                }
+            });
 
             verblijfsobject['verblijfsfuncties'] = verblijfsfuncties;
+            verblijfsobject['oppervlakte'] = totalArea;
         }
         return verblijfsobject;
     });

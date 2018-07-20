@@ -103,7 +103,9 @@ export class VerblijfsFunctie extends Component {
 
     render() {
         const oppervlakte = this.state.verblijfsfunctieData['Oppervlakte'];
-        const key = this.props.verblijfsobject['Identificatie'] + '_' + this.props.verblijfsfunctie['Functie'] + "_" + this.props.parentKey;
+        let key = this.props.verblijfsobject['Identificatie'] + '_' + this.props.verblijfsfunctie['Functie'] + "_" + this.props.parentKey;
+        key = key.split(' ').join('_'); // replace all spaces
+        key = key.split('(').join('').split(')').join(''); // replace all braces
 
         return (
             <div className="row verblijfsfunctie">
@@ -120,7 +122,7 @@ export class VerblijfsFunctie extends Component {
                         <div className="panel-body">
                             <div className="row">
                                 <div className="col-xs-3">Oppervlakte</div>
-                                <div className="col-xs-9"><input type="number" defaultValue={oppervlakte} onChange={this.changeOppervlakte.bind(this)} />m2</div>
+                                <div className="col-xs-9"><input type="number" min="0" defaultValue={oppervlakte} onChange={this.changeOppervlakte.bind(this)} />m2</div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-3">Aantal personen</div>
