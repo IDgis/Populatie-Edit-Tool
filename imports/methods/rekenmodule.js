@@ -30,7 +30,7 @@ function calculcateVerblijfsobjecten(pand, table) {
             const totalArea = calculateVerblijfsObjectArea(verblijfsfuncties);
 
             verblijfsobject['verblijfsfuncties'] = verblijfsfuncties;
-            verblijfsobject['oppervlakte'] = totalArea;
+            verblijfsobject['Oppervlakte'] = totalArea;
         }
         return verblijfsobject;
     });
@@ -119,30 +119,15 @@ function calculateNumPersons(rekenindicator, opp, indelingObject, verblijfsobjec
  * @param {Array} verblijfsfuncties An array of all Verblijfsfuncties for a Verblijfsobject
  */
 function calculateVerblijfsObjectArea(verblijfsfuncties) {
-    return verblijfsfuncties.reduce((prevFunctie, curFunctie) => {
-        if(isVerblijfsfunctiePresent(prevFunctie)) {
-            // First verblijfsfunctie is present. Check if it isn't a return value from the previous calculation
-            if(typeof prevFunctie === 'object') {
-                // Check if the second verblijfsfunctie is present
-                if(isVerblijfsfunctiePresent(curFunctie)) {
-                    return prevFunctie['Oppervlakte'] + curFunctie['Oppervlakte'];
-                } else {
-                    return prevFunctie['Oppervlakte'];
-                }
-            } else if(isVerblijfsfunctiePresent(curFunctie)) {
-                // First verblijfsfunctie is a number. Check the second one
-                return prevFunctie + curFunctie['Oppervlakte'];
-            } else {
-                return prevFunctie;
-            }
-        } else if(isVerblijfsfunctiePresent(curFunctie)) {
-            // First verblijfsfunctie is removed. Return area of second verblijfsfunctie
-            return curFunctie['Oppervlakte'];
-        } else {
-            // No verblijfsfuncties present
-            return 0;
+    let totalArea = 0;
+
+    verblijfsfuncties.forEach(verblijfsfunctie => {
+        if(isVerblijfsfunctiePresent(verblijfsfunctie)) {
+            totalArea += parseFloat(verblijfsfunctie['Oppervlakte']);
         }
     });
+
+    return totalArea;
 }
 
 /**
