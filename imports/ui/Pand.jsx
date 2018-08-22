@@ -162,15 +162,18 @@ export class Pand extends Component {
                     <div className="col-xs-4">Status</div>
                     <div className="col-xs-8">{pand['status']}</div>
                 </div>
-                {verblijfsobjecten.map((verblijfsobject, index) => (
-                    <VerblijfsObject 
-                        key={verblijfsobject['Identificatie'] + index} 
+                {verblijfsobjecten.map((verblijfsobject, index) => {
+                    const adres = verblijfsobject['Adres'];
+                    const partialKey = adres['straat'] + adres['huisnummer'] + adres['postcode'] + adres['woonplaats'] + '_verblijfsobject_';
+
+                    return <VerblijfsObject 
+                        key={partialKey + index} 
                         verblijfsobject={verblijfsobject} 
                         pand={pand}
                         tabel={this.props.tabel} 
                         removeVerblijfsObject={this.removeVerblijfsObject.bind(this)} 
                     />
-                ))}
+                })}
                 <div className="row verblijfsobject-add">
                     <strong><em>Voeg Verblijfsobject toe</em></strong>
                     <form className="verblijfsobject-form" onSubmit={this.addVerblijfsobject.bind(this)} >

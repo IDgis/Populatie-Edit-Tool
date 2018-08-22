@@ -103,7 +103,7 @@ export class VerblijfsFunctie extends Component {
 
     render() {
         const oppervlakte = this.state.verblijfsfunctieData['Oppervlakte'];
-        let key = this.props.verblijfsobject['Identificatie'] + '_' + this.props.verblijfsfunctie['Functie'] + "_" + this.props.parentKey;
+        let key = this.props.parentKey + '_' + this.props.verblijfsfunctie['Functie'];
         key = key.split(' ').join('_'); // replace all spaces
         key = key.split('(').join('').split(')').join(''); // replace all braces
 

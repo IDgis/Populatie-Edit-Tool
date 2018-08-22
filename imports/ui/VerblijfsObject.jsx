@@ -165,6 +165,8 @@ export class VerblijfsObject extends Component {
         const postcode = verblijfsobject.Adres.postcode;
         const woonplaats = verblijfsobject.Adres.woonplaats;
 
+        const partialKey = straat + huisnr + postcode + woonplaats;
+
         const verblijfsfuncties = verblijfsobject.verblijfsfuncties.filter(verblijfsfunctie => {
             return (!verblijfsfunctie.mutaties || (verblijfsfunctie.mutaties && verblijfsfunctie.mutaties !== 'verwijderd'));
         });
@@ -172,15 +174,15 @@ export class VerblijfsObject extends Component {
         return (
             <div className="row verblijfsobject">
                 <div className="panel panel-primary">
-                    <div className="panel-heading" id={`heading${verblijfsobject['Identificatie']}`} onClick={this.scrollToExpanded.bind(this)}>
-                        <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${verblijfsobject['Identificatie']}`} aria-expanded="false" aria-controls={`collapse${verblijfsobject['Identificatie']}`}>
+                    <div className="panel-heading" id={`heading${partialKey}`} onClick={this.scrollToExpanded.bind(this)}>
+                        <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${partialKey}`} aria-expanded="false" aria-controls={`collapse${partialKey}`}>
                             Verblijfsobject: {`${straat} ${huisnr}${huisltr}${huisnrtoev}, ${postcode} ${woonplaats}`}   
                             <button type="button" className="btn btn-danger btn-xs" title="Verwijder verblijfsobject" onClick={this.removeVerblijfsObject.bind(this)} >
                                 <span className="glyphicon glyphicon-minus"></span>
                             </button>                         
                         </h4>
                     </div>
-                    <div id={`collapse${verblijfsobject['Identificatie']}`} className="collapse" aria-labelledby={`heading${verblijfsobject['Identificatie']}`}>
+                    <div id={`collapse${partialKey}`} className="collapse" aria-labelledby={`heading${partialKey}`}>
                         <div className="panel-body">
                             <div className="row">
                                 <div className="col-xs-2">Verblijfsobjectid</div>
@@ -200,10 +202,10 @@ export class VerblijfsObject extends Component {
                                     <VerblijfsFunctie 
                                         verblijfsfunctie={verblijfsfunctie} 
                                         index={index}
-                                        key={verblijfsobject['Identificatie'] + '_' + verblijfsfunctie['Functie'] + '_' + index + '_' + verblijfsfunctie['Oppervlakte']} 
+                                        key={partialKey + '_verblijfsfunctie_' + index} 
                                         tabel={this.props.tabel} verblijfsobject={this.state.verblijfsobject}
                                         removeVerblijfsfunctie={this.removeVerblijfsfunctie.bind(this)}
-                                        parentKey={verblijfsobject['Identificatie'] + '_' + verblijfsfunctie['Functie'] + '_' + index}
+                                        parentKey={partialKey + '_verblijfsfunctie_' + index}
                                     />
                                 ))}
                             </div>
