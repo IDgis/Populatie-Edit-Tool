@@ -6,29 +6,26 @@ export class VerblijfsFunctie extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            verblijfsfunctie: this.getVerblijfsfunctie(props.verblijfsfunctie),
-            verblijfsfunctieData: props.verblijfsfunctie
-        }
+        this.verblijfsfunctie = this.getVerblijfsfunctie();
     }
 
     /**
      * Get the 'Hoofdfunctie' of this 'Verblijfsobject'
      */
-    getVerblijfsfunctie = (verblijfsfunctieData) => {
+    getVerblijfsfunctie = () => {
         return this.props.tabel.filter((entry, i) => (
-            entry['hoofdfunctie BAG'].toLowerCase().indexOf(verblijfsfunctieData['Functie'].toLowerCase()) != -1))[0]['hoofdfunctie BAG'];
+            entry['hoofdfunctie BAG'].toLowerCase().indexOf(this.props.verblijfsfunctie['Functie'].toLowerCase()) != -1))[0]['hoofdfunctie BAG'];
     }
 
     /**
      * Render a dropdown list with all 'Aanvullende indelingen'
      */
-    getAanvullendeIndeling = (aanvullend) => {
-        const hoofdfunctieObject = this.props.tabel.filter((hoofdObj, i) => hoofdObj['hoofdfunctie BAG'] === this.state.verblijfsfunctie)[0];
+    getAanvullendeIndeling = () => {
+        const hoofdfunctieObject = this.props.tabel.filter((hoofdObj, i) => hoofdObj['hoofdfunctie BAG'] === this.verblijfsfunctie)[0];
         const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
 
         return(
-            <select defaultValue={aanvullend} onChange={this.changeAanvullendeIndeling.bind(this)} >
+            <select defaultValue={this.props.verblijfsfunctie['aanvullend']} onChange={this.changeAanvullendeIndeling.bind(this)} >
                 {aanvullendeIndelingen.map((aanvullend, i) => (<option key={aanvullend['functie'] + "_" + i}>{aanvullend['functie']}</option>))}
             </select>
         );
@@ -39,14 +36,13 @@ export class VerblijfsFunctie extends Component {
      */
     changeAanvullendeIndeling = (evt) => {
         const aanvullendeIndeling = evt.target.value;
-        const verblijfsfunctieData = this.state.verblijfsfunctieData;
-        verblijfsfunctieData['aanvullend'] = aanvullendeIndeling;
+        this.props.verblijfsfunctie['aanvullend'] = aanvullendeIndeling;
 
         if(!document.getElementById('saveButton').classList.contains('disabled')) {
             document.getElementById('saveButton').classList.add('disabled');
         }
 
-        this.setState({verblijfsfunctieData});
+        this.forceUpdate();
     }
 
     /**
@@ -54,37 +50,33 @@ export class VerblijfsFunctie extends Component {
      */
     removeVerblijfsfunctie = (evt) => {
         evt.preventDefault();
-        const hoofdfunctie = this.state.verblijfsfunctieData;
-        hoofdfunctie['mutaties'] = 'verwijderd';
-        const vbo = this.props.verblijfsobject;
+        this.props.verblijfsfunctie['mutaties'] = 'verwijderd';
 
-        this.props.removeVerblijfsfunctie(vbo['verblijfsfuncties']);
+        this.props.removeVerblijfsfunctie();
     }
 
     /**
      * Change the number of woonunits based on the given input
      */
     changeWoonunits = (evt) => {
-        const verblijfsfunctieData = this.state.verblijfsfunctieData;
-        verblijfsfunctieData['aantal-woonunits'] = parseInt(evt.target.value);
-        if(!verblijfsfunctieData.mutaties) {
-            verblijfsfunctieData['mutaties'] = 'gewijzigd';
+        this.props.verblijfsfunctie['aantal-woonunits'] = parseInt(evt.target.value);
+        if(!this.props.verblijfsfunctie.mutaties) {
+            this.props.verblijfsfunctie['mutaties'] = 'gewijzigd';
         }
 
-        this.setState({verblijfsfunctieData});
+        this.forceUpdate();
     }
 
     /**
      * Change the area of the 'Verblijfsfunctie' based on the given input
      */
     changeOppervlakte = (evt) => {
-        const verblijfsfunctieData = this.state.verblijfsfunctieData;
-        verblijfsfunctieData['Oppervlakte'] = parseInt(evt.target.value);
-        if(!verblijfsfunctieData.mutaties) {
-            verblijfsfunctieData['mutaties'] = 'gewijzigd';
+        this.props.verblijfsfunctie['Oppervlakte'] = parseInt(evt.target.value);
+        if(!this.props.verblijfsfunctie.mutaties) {
+            this.props.verblijfsfunctie['mutaties'] = 'gewijzigd';
         }
 
-        this.setState({verblijfsfunctieData});
+        this.forceUpdate();
     }
 
     /**
@@ -102,7 +94,10 @@ export class VerblijfsFunctie extends Component {
     }
 
     render() {
-        const oppervlakte = this.state.verblijfsfunctieData['Oppervlakte'];
+        if(this.props.verblijfsfunctie.mutaties && this.props.verblijfsfunctie.mutaties === 'verwijderd') {
+            return null;
+        }
+
         let key = this.props.parentKey + '_' + this.props.verblijfsfunctie['Functie'];
         key = key.split(' ').join('_'); // replace all spaces
         key = key.split('(').join('').split(')').join(''); // replace all braces
@@ -112,7 +107,7 @@ export class VerblijfsFunctie extends Component {
                 <div className="panel panel-info">
                     <div className="panel-heading" id={`heading${key}`} onClick={this.scrollToExpanded.bind(this)}>
                         <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${key}`} aria-expanded="false" aria-controls={`collapse${key}`}>
-                            Verblijfsfunctie: {this.state.verblijfsfunctie}
+                            Verblijfsfunctie: {this.verblijfsfunctie}
                             <button type="button" className="btn btn-danger btn-xs" title="Verwijder verblijfsfunctie" onClick={this.removeVerblijfsfunctie.bind(this)} >
                                 <span className="glyphicon glyphicon-minus"></span>
                             </button>
@@ -122,14 +117,14 @@ export class VerblijfsFunctie extends Component {
                         <div className="panel-body">
                             <div className="row">
                                 <div className="col-xs-3">Oppervlakte</div>
-                                <div className="col-xs-9"><input type="number" min="0" defaultValue={oppervlakte} onChange={this.changeOppervlakte.bind(this)} />m2</div>
+                                <div className="col-xs-9"><input type="number" min="0" defaultValue={this.props.verblijfsfunctie['Oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>
                             </div>
                             <div className="row">
                                 <div className="col-xs-3">Aantal personen</div>
-                                <div className="col-xs-9">{this.state.verblijfsfunctieData['aantal-personen']}</div>
+                                <div className="col-xs-9">{this.props.verblijfsfunctie['aantal-personen']}</div>
                             </div>
                             {
-                                (this.state.verblijfsfunctie !== 'Woonfunctie') ? <div></div> :
+                                (this.verblijfsfunctie !== 'Woonfunctie') ? <div></div> :
                                 <div className="row">
                                     <div className="col-xs-3">Aantal woonunits</div>
                                     <div className="col-xs-9"><input type="number" defaultValue={1} onChange={this.changeWoonunits.bind(this)} /></div>
@@ -137,7 +132,7 @@ export class VerblijfsFunctie extends Component {
                             }
                             <div className="row">
                                 <div className="col-xs-3">Aanvullende indeling</div>
-                                <div className="col-xs-9">{this.getAanvullendeIndeling(this.state.verblijfsfunctieData['aanvullend'])}</div>
+                                <div className="col-xs-9">{this.getAanvullendeIndeling(this.props.verblijfsfunctie['aanvullend'])}</div>
                             </div>
                         </div>
                     </div>

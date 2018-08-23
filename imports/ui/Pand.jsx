@@ -9,7 +9,6 @@ export class Pand extends Component {
         super(props);
         
         this.state = {
-            pand: props.pand,
             errorMessage: <div></div>
         }
     }
@@ -23,8 +22,6 @@ export class Pand extends Component {
         const valid = this.validateVerblijfsObject(evt);
 
         if(valid) {
-            const pand = this.state.pand;
-
             const straat = evt.target[0].value;
             const nr = evt.target[1].value;
             const letter = evt.target[2].value;
@@ -45,7 +42,7 @@ export class Pand extends Component {
                 },
                 mutaties: "toegevoegd"
             }
-            pand['verblijfsobjecten'].push(vbo);
+            this.props.pand['verblijfsobjecten'].push(vbo);
 
             evt.target[0].value = "";
             evt.target[1].value = "";
@@ -57,7 +54,7 @@ export class Pand extends Component {
                 document.getElementById('saveButton').classList.add('disabled');
             }
 
-            this.setState({pand});
+            this.forceUpdate();
         }
     }
 
@@ -78,8 +75,7 @@ export class Pand extends Component {
             return false;
         }
 
-        const pand = this.state.pand;
-        const dubbelePanden = pand.verblijfsobjecten.filter(verblijfsobject => {
+        const dubbelePanden = this.props.pand.verblijfsobjecten.filter(verblijfsobject => {
             const adres = verblijfsobject.Adres;
             return (adres.straat.toLowerCase() == straat.toLowerCase() &&
                     adres.huisnummer == nr &&
@@ -103,25 +99,17 @@ export class Pand extends Component {
 
     /**
      * Removes the given 'VerblijfsObject'
-     * 
-     * @param verblijfsobject - The 'VerblijfsObject' to remove
      */
-    removeVerblijfsObject = (verblijfsobjecten) => {
-        const pand = this.state.pand;
-        pand['verblijfsobjecten'] = verblijfsobjecten;
-
+    removeVerblijfsObject = () => {
         if(!document.getElementById('saveButton').classList.contains('disabled')) {
             document.getElementById('saveButton').classList.add('disabled');
         }
 
-        this.setState({pand});
+        this.forceUpdate();
     }
 
     render() {
-        const pand = this.state.pand;
-        const verblijfsobjecten = pand.verblijfsobjecten.filter(verblijfsobject => {
-            return (!verblijfsobject.mutaties || (verblijfsobject.mutaties && verblijfsobject.mutaties !== 'verwijderd'));
-        });
+        const pand = this.props.pand;
 
         return (
             <div className="row pand" key={pand['Identificatie']}>
@@ -162,9 +150,9 @@ export class Pand extends Component {
                     <div className="col-xs-4">Status</div>
                     <div className="col-xs-8">{pand['status']}</div>
                 </div>
-                {verblijfsobjecten.map((verblijfsobject, index) => {
+                {pand.verblijfsobjecten.map((verblijfsobject, index) => {
                     const adres = verblijfsobject['Adres'];
-                    const partialKey = adres['straat'] + adres['huisnummer'] + adres['postcode'] + adres['woonplaats'] + '_verblijfsobject_';
+                    const partialKey = (adres['straat'] + adres['huisnummer'] + adres['postcode'] + adres['woonplaats'] + '_verblijfsobject_').replace(' ', '');
 
                     return <VerblijfsObject 
                         key={partialKey + index} 
