@@ -18,8 +18,9 @@ export class EditTool extends Component {
             output: null,
             errorMessage: null,
             helpOpen: false,
-            tabel: getTabel()
         }
+
+        this.tabel = getTabel();
     }
 
     /**
@@ -68,7 +69,7 @@ export class EditTool extends Component {
      */
     calculateResult = (evt) => {
         evt.preventDefault();
-        const output = calculateOutput(this.state.output, this.state.tabel);
+        const output = calculateOutput(this.state.output, this.tabel);
 
         if(document.getElementById('saveButton').classList.contains('disabled')) {
             document.getElementById('saveButton').classList.remove('disabled');
@@ -99,7 +100,7 @@ export class EditTool extends Component {
                     </div>
                     <div className="modal-body">
                         {panden.map((pand, index) => (
-                            <Pand pand={pand} key={pand['Identificatie']} tabel={this.state.tabel} />
+                            <Pand pand={pand} key={pand['Identificatie']} tabel={this.tabel} />
                         ))}
                     </div>
                     <div className="modal-footer">

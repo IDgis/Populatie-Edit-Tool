@@ -1,5 +1,5 @@
 FROM idgis/meteor:1.7
-MAINTAINER IDgis bv
+LABEL maintainer="IDgis bv"
 
 RUN mkdir /home/meteorapp
 WORKDIR /home/meteorapp
