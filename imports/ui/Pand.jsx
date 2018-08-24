@@ -34,7 +34,7 @@ export class Pand extends Component {
                 Adres: {
                     "Identificatie": "",
                     "straat": straat,
-                    "huisnummer": nr,
+                    "huisnummer": parseInt(nr),
                     "huisletter": letter,
                     "huisnummer-toevoeging": "",
                     "postcode": postcode,
@@ -110,6 +110,10 @@ export class Pand extends Component {
 
     render() {
         const pand = this.props.pand;
+        const adres = pand.verblijfsobjecten[0].Adres;
+        const straat = adres.straat ? adres.straat : "";
+        const postcode = adres.postcode ? adres.postcode : "";
+        const plaats = adres.woonplaats ? adres.woonplaats : "";
 
         return (
             <div className="row pand" key={pand['Identificatie']}>
@@ -168,7 +172,7 @@ export class Pand extends Component {
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputStraat">Straat: </label>
-                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" />
+                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" defaultValue={straat} />
                             </div>
                         </div>
                         <div className="row">
@@ -186,13 +190,13 @@ export class Pand extends Component {
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputPostcode">Postcode: </label>
-                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" />
+                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" defaultValue={postcode} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputPlaats">Plaats: </label>
-                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" />
+                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" defaultValue={plaats} />
                             </div>
                         </div>
                         <div className="row">
