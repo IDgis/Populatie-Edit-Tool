@@ -25,7 +25,7 @@ export function calculateOutput(input, table) {
 function calculcateVerblijfsobjecten(pand, table) {
     const huishoudensgrootte = pand['huishoudensgrootte'];
     return pand['verblijfsobjecten'].map(verblijfsobject => {
-        if(!(verblijfsobject.mutaties && verblijfsobject.mutaties === 'verwijderd')) {
+        if(!(verblijfsobject.mutatie && verblijfsobject.mutatie === 'verwijderd')) {
             const verblijfsfuncties = calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte);
             const totalArea = calculateVerblijfsObjectArea(verblijfsfuncties);
 
@@ -45,7 +45,7 @@ function calculcateVerblijfsobjecten(pand, table) {
  */
 function calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte) {
     return verblijfsobject['verblijfsfuncties'].map(verblijfsfunctie => {
-        if(!(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'verwijderd')) {
+        if(!(verblijfsfunctie.mutatie && verblijfsfunctie.mutatie === 'verwijderd')) {
             const hoofdfunctieObject = getHoofdfunctieObject(verblijfsfunctie, table);
             const hoofdfunctie = hoofdfunctieObject['hoofdfunctie BAG'];
             const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
@@ -56,8 +56,8 @@ function calculateVerblijfsfuncties(verblijfsobject, table, huishoudensgrootte) 
             const numPersons = calculateNumPersons(rekenIndicator, oppervlakte, rekenObject, verblijfsobject, huishoudensgrootte);
 
             if(verblijfsfunctie['aantal-personen'] !== parseFloat(numPersons) &&
-                    !(verblijfsfunctie.mutaties && verblijfsfunctie.mutaties === 'toegevoegd')) {
-                verblijfsfunctie['mutaties'] = 'gewijzigd';
+                    !(verblijfsfunctie.mutatie && verblijfsfunctie.mutatie === 'toegevoegd')) {
+                verblijfsfunctie['mutatie'] = 'gewijzigd';
             }
 
             verblijfsfunctie['Functie'] = hoofdfunctie;
@@ -136,5 +136,5 @@ function calculateVerblijfsObjectArea(verblijfsfuncties) {
  * @param {Object} functie The verblijfsfunctie to check
  */
 function isVerblijfsfunctiePresent(functie) {
-    return (!functie.mutaties || (functie.mutaties && functie.mutaties !== 'verwijderd'));
+    return (!functie.mutatie || (functie.mutatie && functie.mutatie !== 'verwijderd'));
 }

@@ -50,7 +50,7 @@ export class VerblijfsFunctie extends Component {
      */
     removeVerblijfsfunctie = (evt) => {
         evt.preventDefault();
-        this.props.verblijfsfunctie['mutaties'] = 'verwijderd';
+        this.props.verblijfsfunctie['mutatie'] = 'verwijderd';
 
         this.props.removeVerblijfsfunctie();
     }
@@ -60,8 +60,8 @@ export class VerblijfsFunctie extends Component {
      */
     changeWoonunits = (evt) => {
         this.props.verblijfsfunctie['aantal-woonunits'] = parseInt(evt.target.value);
-        if(!this.props.verblijfsfunctie.mutaties) {
-            this.props.verblijfsfunctie['mutaties'] = 'gewijzigd';
+        if(!this.props.verblijfsfunctie.mutatie) {
+            this.props.verblijfsfunctie['mutatie'] = 'gewijzigd';
         }
 
         this.forceUpdate();
@@ -72,8 +72,8 @@ export class VerblijfsFunctie extends Component {
      */
     changeOppervlakte = (evt) => {
         this.props.verblijfsfunctie['Oppervlakte'] = parseInt(evt.target.value);
-        if(!this.props.verblijfsfunctie.mutaties) {
-            this.props.verblijfsfunctie['mutaties'] = 'gewijzigd';
+        if(!this.props.verblijfsfunctie.mutatie) {
+            this.props.verblijfsfunctie['mutatie'] = 'gewijzigd';
         }
 
         this.forceUpdate();
@@ -94,7 +94,7 @@ export class VerblijfsFunctie extends Component {
     }
 
     render() {
-        if(this.props.verblijfsfunctie.mutaties && this.props.verblijfsfunctie.mutaties === 'verwijderd') {
+        if(this.props.verblijfsfunctie.mutatie && this.props.verblijfsfunctie.mutatie === 'verwijderd') {
             return null;
         }
 

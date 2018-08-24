@@ -43,7 +43,7 @@ export class VerblijfsObject extends Component {
      */
     getAddBagFunctie = () => {
         const verblijfsfuncties = this.props.verblijfsobject['verblijfsfuncties']
-            .filter(functie => (!functie.mutaties || (functie.mutaties && functie.mutaties !== 'verwijderd')))
+            .filter(functie => (!functie.mutatie || (functie.mutatie && functie.mutatie !== 'verwijderd')))
             .map(functie => functie['Functie']);
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
 
@@ -82,7 +82,7 @@ export class VerblijfsObject extends Component {
             "aanvullend": "",
             "Functie": selectedBagFunctie,
             "Oppervlakte": parseFloat(selectedOppervlakte),
-            "mutaties": "toegevoegd"
+            "mutatie": "toegevoegd"
         }
         this.props.verblijfsobject['verblijfsfuncties'].push(verblijfsfunctie);
 
@@ -98,7 +98,7 @@ export class VerblijfsObject extends Component {
      */
     removeVerblijfsObject = (evt) => {
         evt.preventDefault();
-        this.props.verblijfsobject['mutaties'] = 'verwijderd';
+        this.props.verblijfsobject['mutatie'] = 'verwijderd';
         this.props.removeVerblijfsObject();
     }
 
@@ -119,8 +119,8 @@ export class VerblijfsObject extends Component {
     changeOppervlakte = (evt) => {
         const verblijfsobject = this.props.verblijfsobject;
         verblijfsobject['Oppervlakte'] = parseFloat(evt.target.value);
-        if(!verblijfsobject.mutaties) {
-            verblijfsobject['mutaties'] = 'gewijzigd';
+        if(!verblijfsobject.mutatie) {
+            verblijfsobject['mutatie'] = 'gewijzigd';
         }
 
         if(!document.getElementById('saveButton').classList.contains('disabled')) {
@@ -145,7 +145,7 @@ export class VerblijfsObject extends Component {
     }
 
     render() {
-        if(this.props.verblijfsobject.mutaties && this.props.verblijfsobject.mutaties === 'verwijderd') {
+        if(this.props.verblijfsobject.mutatie && this.props.verblijfsobject.mutatie === 'verwijderd') {
             return null;
         }
 

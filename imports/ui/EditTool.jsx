@@ -90,7 +90,7 @@ export class EditTool extends Component {
     render() {
         if(this.state.output && !this.state.errorMessage) {
             const panden = this.state.output.panden.filter(pand => {
-                return (!pand.mutaties || (pand.mutaties && pand.mutaties !== 'verwijderd'));
+                return (!pand.mutatie || (pand.mutatie && pand.mutatie !== 'verwijderd'));
             });
 
             const modalContent = this.state.helpOpen ? <HelpPage toggleHelp={this.toggleHelp.bind(this, false)} /> :

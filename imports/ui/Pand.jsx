@@ -40,7 +40,7 @@ export class Pand extends Component {
                     "postcode": postcode,
                     "woonplaats": plaats
                 },
-                mutaties: "toegevoegd"
+                mutatie: "toegevoegd"
             }
             this.props.pand['verblijfsobjecten'].push(vbo);
 
