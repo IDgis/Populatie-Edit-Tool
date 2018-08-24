@@ -92,6 +92,7 @@
             },
             {
                 "hoofdfunctie BAG": "Industriefunctie",
+                "defaultAanvullend": "Industriefunctie groot (milieucategorie 3.2 en hoger)",
                 "rekenindicator": "m2 vbo per persoon",
                 "aanvullende functies": [
                     {
@@ -103,7 +104,8 @@
                     },
                     {
                         "functie": "Industriefunctie groot (milieucategorie 3.2 en hoger)",
-                        "aantal": "100 (maatwerk)",
+                        "aantal": "maatwerk",
+                        "default": 100,
                         "dag": 100,
                         "avond": "maatwerk",
                         "nacht": "maatwerk"
@@ -131,6 +133,7 @@
                     {
                         "functie": "Kantoorfunctie groot (>6000m2 bvo met atrium, parkeergarage of andere grote collectieve ruimtes",
                         "aantal": "maatwerk",
+                        "default": 50,
                         "dag": 100,
                         "avond": 20,
                         "nacht": "maatwerk"
@@ -191,6 +194,7 @@
                     {
                         "functie": "Sportfunctie groot (inclusief bezoekers)",
                         "aantal": "maatwerk",
+                        "default": 50,
                         "dag": 100,
                         "avond": 100,
                         "nacht": 0
@@ -210,7 +214,8 @@
                     },
                     {
                         "functie": "Winkelfunctie (inclusief bezoekers) groot: bouwmarkt, tuincentrum, megastore",
-                        "aantal": "maatwerrk",
+                        "aantal": "maatwerk",
+                        "default": 30,
                         "dag": 100,
                         "avond": 20,
                         "nacht": 0

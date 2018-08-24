@@ -10,6 +10,8 @@ export class VerblijfsObject extends Component {
         this.state = {
             addButtonVisible: true
         }
+
+        this.setDefaultVerblijfsfuncties(props.verblijfsobject.verblijfsfuncties);
     }
 
     componentDidMount = () => {
@@ -38,6 +40,30 @@ export class VerblijfsObject extends Component {
         }
     }
 
+    setDefaultVerblijfsfuncties = (verblijfsfuncties) => {
+        verblijfsfuncties.forEach(verblijfsfunctie => {
+            console.log(verblijfsfunctie);
+
+            const hoofdFunctieTabel = this.props.tabel.filter(functie => functie['hoofdfunctie BAG'].toLowerCase() === verblijfsfunctie.Functie.toLowerCase())[0];
+            const aanvullendeIndelingen = hoofdFunctieTabel['aanvullende functies'];
+            console.log(hoofdFunctieTabel);
+
+            let aanvullend = '';
+
+            if (hoofdFunctieTabel['hoofdfunctie BAG'] === 'Woonfunctie') {
+                if (verblijfsfunctie.Oppervlakte < 60) {
+                    aanvullend = aanvullendeIndelingen[0]['functie'];
+                } else {
+                    aanvullend = aanvullendeIndelingen[1]['functie'];
+                }
+            } else {
+                aanvullend = hoofdFunctieTabel.defaultAanvullend ? hoofdFunctieTabel.defaultAanvullend : aanvullendeIndelingen[0]['functie'];
+            }
+
+            verblijfsfunctie.aanvullend = aanvullend;
+        });
+    }
+
     /**
      * Render the 'Voeg Verblijfsfunctie toe' element
      */
@@ -64,7 +90,7 @@ export class VerblijfsObject extends Component {
                     <select>
                         {available.map((functie, i) => (<option key={functie + "_" + i}>{functie}</option>))}
                     </select>
-                    <input type="number" min="0" defaultValue="50" />m2
+                    <input type="number" min="0" defaultValue="100" />m2
                 </form>
             </div>
         );
@@ -77,9 +103,10 @@ export class VerblijfsObject extends Component {
         evt.preventDefault();
         const selectedBagFunctie = evt.target[1].value;
         const selectedOppervlakte = evt.target[2].value;
+        const aanvullend = this.getAanvullendeFunctie(selectedBagFunctie, selectedOppervlakte);
         const verblijfsfunctie = {
             "aantal-personen": 0,
-            "aanvullend": "",
+            "aanvullend": aanvullend,
             "Functie": selectedBagFunctie,
             "Oppervlakte": parseFloat(selectedOppervlakte),
             "mutatie": "toegevoegd"
@@ -91,6 +118,21 @@ export class VerblijfsObject extends Component {
         }
 
         this.forceUpdate();
+    }
+
+    getAanvullendeFunctie = (hoofdFunctie, oppervlakte) => {
+        const hoofdFunctieTabel = this.props.tabel.filter(functie => functie['hoofdfunctie BAG'] === hoofdFunctie)[0];
+        const aanvullend = hoofdFunctieTabel['aanvullende functies'];
+
+        if (hoofdFunctie === 'Woonfunctie') {
+            if (oppervlakte < 60) {
+                return aanvullend[0]['functie'];
+            } else {
+                return aanvullend[1]['functie'];
+            }
+        } else {
+            return hoofdFunctieTabel.defaultAanvullend ? hoofdFunctieTabel.defaultAanvullend : aanvullend[0]['functie'];
+        }
     }
 
     /**
