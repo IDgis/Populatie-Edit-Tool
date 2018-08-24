@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 
 import { HelpPage } from './HelpPage';
 import { Pand } from './Pand';
-import { getTabel } from '../methods/testdata';
 import { calculateOutput } from '../methods/rekenmodule';
 
 
@@ -20,7 +19,7 @@ export class EditTool extends Component {
             helpOpen: false,
         }
 
-        this.tabel = getTabel();
+        this.tabel = Meteor.settings.public.rekentabel;
     }
 
     /**
