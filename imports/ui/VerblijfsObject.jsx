@@ -150,12 +150,14 @@ export class VerblijfsObject extends Component {
         }
 
         const verblijfsobject = this.props.verblijfsobject;
-        const straat = verblijfsobject.Adres.straat;
-        const huisnr = verblijfsobject.Adres.huisnummer;
-        const huisltr = verblijfsobject.Adres.huisletter;
-        const huisnrtoev = verblijfsobject.Adres['huisnummer-toevoeging'];
-        const postcode = verblijfsobject.Adres.postcode;
-        const woonplaats = verblijfsobject.Adres.woonplaats;
+        const adres = verblijfsobject.Adres;
+
+        const straat = adres.straat ? adres.straat : "";
+        const huisnr = adres.huisnummer ? adres.huisnummer : "";
+        const huisltr = adres.huisletter ? adres.huisletter : "";
+        const huisnrtoev = adres['huisnummer-toevoeging'] ? adres['huisnummer-toevoeging'] : "";
+        const postcode = adres.postcode ? adres.postcode : "";
+        const woonplaats = adres.woonplaats ? adres.woonplaats : "";
 
         const partialKey = (straat + huisnr + huisltr + huisnrtoev + postcode + woonplaats).replace(' ', '');
 
