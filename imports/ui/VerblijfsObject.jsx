@@ -42,11 +42,9 @@ export class VerblijfsObject extends Component {
 
     setDefaultVerblijfsfuncties = (verblijfsfuncties) => {
         verblijfsfuncties.forEach(verblijfsfunctie => {
-            console.log(verblijfsfunctie);
 
             const hoofdFunctieTabel = this.props.tabel.filter(functie => functie['hoofdfunctie BAG'].toLowerCase() === verblijfsfunctie.Functie.toLowerCase())[0];
             const aanvullendeIndelingen = hoofdFunctieTabel['aanvullende functies'];
-            console.log(hoofdFunctieTabel);
 
             let aanvullend = '';
 

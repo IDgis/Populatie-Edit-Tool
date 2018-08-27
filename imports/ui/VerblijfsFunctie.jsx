@@ -31,6 +31,23 @@ export class VerblijfsFunctie extends Component {
         );
     }
 
+    getNumPersons = () => {
+        const hoofdfunctieObject = this.props.tabel.filter((hoofdObj, i) => hoofdObj['hoofdfunctie BAG'] === this.verblijfsfunctie)[0];
+        const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
+        const aanvullendeIndeling = aanvullendeIndelingen.filter(indeling => indeling.functie === this.props.verblijfsfunctie.aanvullend)[0];
+        const defaultAantal = this.props.verblijfsfunctie['aantal-personen'];
+
+        if (typeof aanvullendeIndeling.aantal === 'string') {
+            return <input type="number" step="0.01" min="0" defaultValue={defaultAantal} onChange={this.changeNumPersons} />
+        } else {
+            return defaultAantal;
+        }
+    }
+
+    changeNumPersons = (evt) => {
+        this.props.verblijfsfunctie['aantal-personen'] = parseFloat(evt.target.value);
+    }
+
     /**
      * When selecting another value in the dropdown, update the json object accordingly.
      */
@@ -121,7 +138,7 @@ export class VerblijfsFunctie extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-xs-3">Aantal personen</div>
-                                <div className="col-xs-9">{this.props.verblijfsfunctie['aantal-personen']}</div>
+                                <div className="col-xs-9">{/*this.props.verblijfsfunctie['aantal-personen']*/ this.getNumPersons()}</div>
                             </div>
                             {
                                 (this.verblijfsfunctie !== 'Woonfunctie') ? <div></div> :
