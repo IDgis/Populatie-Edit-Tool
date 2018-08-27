@@ -35,9 +35,12 @@ export class VerblijfsFunctie extends Component {
         const hoofdfunctieObject = this.props.tabel.filter((hoofdObj, i) => hoofdObj['hoofdfunctie BAG'] === this.verblijfsfunctie)[0];
         const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
         const aanvullendeIndeling = aanvullendeIndelingen.filter(indeling => indeling.functie === this.props.verblijfsfunctie.aanvullend)[0];
-        const defaultAantal = this.props.verblijfsfunctie['aantal-personen'];
+        let defaultAantal = this.props.verblijfsfunctie['aantal-personen'];
 
         if (typeof aanvullendeIndeling.aantal === 'string') {
+            if (!defaultAantal > 0.0) {
+                defaultAantal = (this.props.verblijfsfunctie['Oppervlakte'] / aanvullendeIndeling['default']).toFixed(2);
+            }
             return <input type="number" step="0.01" min="0" defaultValue={defaultAantal} onChange={this.changeNumPersons} />;
         } else {
             return defaultAantal;
