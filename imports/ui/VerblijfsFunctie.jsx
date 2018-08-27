@@ -38,7 +38,7 @@ export class VerblijfsFunctie extends Component {
         const defaultAantal = this.props.verblijfsfunctie['aantal-personen'];
 
         if (typeof aanvullendeIndeling.aantal === 'string') {
-            return <input type="number" step="0.01" min="0" defaultValue={defaultAantal} onChange={this.changeNumPersons} />
+            return <input type="number" step="0.01" min="0" defaultValue={defaultAantal} onChange={this.changeNumPersons} />;
         } else {
             return defaultAantal;
         }
@@ -138,7 +138,7 @@ export class VerblijfsFunctie extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-xs-3">Aantal personen</div>
-                                <div className="col-xs-9">{/*this.props.verblijfsfunctie['aantal-personen']*/ this.getNumPersons()}</div>
+                                <div className="col-xs-9">{this.getNumPersons()}</div>
                             </div>
                             {
                                 (this.verblijfsfunctie !== 'Woonfunctie') ? <div></div> :
