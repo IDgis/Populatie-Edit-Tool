@@ -40,6 +40,25 @@ export class EditTool extends Component {
                 this.setState({errorMessage});
             }
         }
+
+        /*if (this.state.input && this.state.input.panden) {
+            this.state.input.panden.forEach(pand => {
+                if (pand.fouten) {
+                    console.log('FOUTEN');
+                    this.setOutputStatus('fouten');
+                } else if (pand.waarschuwingen && !(this.state.output.status === 'fouten')) {
+                    console.log('WAARSCHUWINGEN');
+                    this.setOutputStatus('waarschuwingen');
+                } else if (!this.state.output.status) {
+                    console.log('OK');
+                    this.setOutputStatus('OK');
+                }
+            });
+        }*/
+    }
+
+    setOutputStatus = (status) => {
+        this.state.output.status = status;
     }
 
     /**
@@ -58,7 +77,17 @@ export class EditTool extends Component {
         evt.preventDefault();
 
         if(!evt.target.classList.contains('disabled')) {
-            this.state.output.status = "OK";
+            if (this.state.input && this.state.input.panden) {
+                this.state.input.panden.forEach(pand => {
+                    if (pand.fouten) {
+                        this.setOutputStatus('fouten');
+                    } else if (pand.waarschuwingen && !(this.state.output.status === 'fouten')) {
+                        this.setOutputStatus('waarschuwingen');
+                    } else if (!this.state.output.status) {
+                        this.setOutputStatus('OK');
+                    }
+                });
+            }
             window.parent.postMessage(JSON.stringify(this.state.output), Meteor.settings.public.targetUrl);
         }
     }

@@ -9,8 +9,33 @@ export class Pand extends Component {
         super(props);
         
         this.state = {
-            errorMessage: <div></div>
+            errorMessage: <div></div>,
+            fouten: [],
+            waarschuwingen: []
         }
+    }
+
+    componentDidMount() {
+        this.checkForErrors();
+    }
+
+    checkForErrors = () => {
+        const fouten = [];
+        const waarschuwingen = [];
+
+        if (this.props.pand.fouten) {
+            this.props.pand.fouten.forEach((fout, index) => {
+                fouten.push(<div className="alert alert-danger" key={`fout_${index}`}>{ fout }</div>);
+            });
+        }
+
+        if (this.props.pand.waarschuwingen) {
+            this.props.pand.waarschuwingen.forEach((waarschuwing, index) => {
+                waarschuwingen.push(<div className="alert alert-warning" key={`waarschuwing_${index}`}>{ waarschuwing }</div>);
+            });
+        }
+
+        this.setState({fouten, waarschuwingen});
     }
 
     /**
@@ -118,6 +143,12 @@ export class Pand extends Component {
         return (
             <div className="row pand" key={pand['Identificatie']}>
                 <h3>Pand {pand['Identificatie']}</h3>
+                <div className="row">
+                    {this.state.fouten}
+                </div>
+                <div className="row">
+                    {this.state.waarschuwingen}
+                </div>
                 <div className="row">
                     <div className="col-xs-4">Aantal verblijfsobjecten</div>
                     <div className="col-xs-8">{pand['aantal verblijfsobjecten']}</div>
