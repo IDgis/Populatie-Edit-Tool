@@ -69,11 +69,11 @@ export class Pand extends Component {
             }
             this.props.pand['verblijfsobjecten'].push(vbo);
 
-            evt.target[0].value = "";
+            evt.target[0].value = this.straat;
             evt.target[1].value = "";
             evt.target[2].value = "";
-            evt.target[3].value = "";
-            evt.target[4].value = "";
+            evt.target[3].value = this.postcode;
+            evt.target[4].value = this.plaats;
 
             if(!document.getElementById('saveButton').classList.contains('disabled')) {
                 document.getElementById('saveButton').classList.add('disabled');
@@ -136,9 +136,9 @@ export class Pand extends Component {
     render() {
         const pand = this.props.pand;
         const adres = pand.verblijfsobjecten[0].Adres;
-        const straat = adres.straat ? adres.straat : "";
-        const postcode = adres.postcode ? adres.postcode : "";
-        const plaats = adres.woonplaats ? adres.woonplaats : "";
+        this.straat = adres.straat ? adres.straat : "";
+        this.postcode = adres.postcode ? adres.postcode : "";
+        this.plaats = adres.woonplaats ? adres.woonplaats : "";
 
         return (
             <div className="row pand" key={pand['Identificatie']}>
@@ -203,7 +203,7 @@ export class Pand extends Component {
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputStraat">Straat: </label>
-                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" defaultValue={straat} />
+                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" defaultValue={this.straat} />
                             </div>
                         </div>
                         <div className="row">
@@ -221,13 +221,13 @@ export class Pand extends Component {
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputPostcode">Postcode: </label>
-                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" defaultValue={postcode} />
+                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" defaultValue={this.postcode} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputPlaats">Plaats: </label>
-                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" defaultValue={plaats} />
+                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" defaultValue={this.plaats} />
                             </div>
                         </div>
                         <div className="row">
