@@ -31,6 +31,26 @@ export class VerblijfsFunctie extends Component {
         );
     }
 
+    getNumPersons = () => {
+        const hoofdfunctieObject = this.props.tabel.filter((hoofdObj, i) => hoofdObj['hoofdfunctie BAG'] === this.verblijfsfunctie)[0];
+        const aanvullendeIndelingen = hoofdfunctieObject['aanvullende functies'];
+        const aanvullendeIndeling = aanvullendeIndelingen.filter(indeling => indeling.functie === this.props.verblijfsfunctie.aanvullend)[0];
+        let defaultAantal = this.props.verblijfsfunctie['aantal-personen'];
+
+        if (typeof aanvullendeIndeling.aantal === 'string') {
+            if (!defaultAantal > 0.0) {
+                defaultAantal = (this.props.verblijfsfunctie['Oppervlakte'] / aanvullendeIndeling['default']).toFixed(2);
+            }
+            return <input type="number" step="0.01" min="0" defaultValue={defaultAantal} onChange={this.changeNumPersons} />;
+        } else {
+            return defaultAantal;
+        }
+    }
+
+    changeNumPersons = (evt) => {
+        this.props.verblijfsfunctie['aantal-personen'] = parseFloat(evt.target.value);
+    }
+
     /**
      * When selecting another value in the dropdown, update the json object accordingly.
      */
@@ -50,7 +70,7 @@ export class VerblijfsFunctie extends Component {
      */
     removeVerblijfsfunctie = (evt) => {
         evt.preventDefault();
-        this.props.verblijfsfunctie['mutaties'] = 'verwijderd';
+        this.props.verblijfsfunctie['mutatie'] = 'verwijderd';
 
         this.props.removeVerblijfsfunctie();
     }
@@ -60,8 +80,8 @@ export class VerblijfsFunctie extends Component {
      */
     changeWoonunits = (evt) => {
         this.props.verblijfsfunctie['aantal-woonunits'] = parseInt(evt.target.value);
-        if(!this.props.verblijfsfunctie.mutaties) {
-            this.props.verblijfsfunctie['mutaties'] = 'gewijzigd';
+        if(!this.props.verblijfsfunctie.mutatie) {
+            this.props.verblijfsfunctie['mutatie'] = 'gewijzigd';
         }
 
         this.forceUpdate();
@@ -72,8 +92,8 @@ export class VerblijfsFunctie extends Component {
      */
     changeOppervlakte = (evt) => {
         this.props.verblijfsfunctie['Oppervlakte'] = parseInt(evt.target.value);
-        if(!this.props.verblijfsfunctie.mutaties) {
-            this.props.verblijfsfunctie['mutaties'] = 'gewijzigd';
+        if(!this.props.verblijfsfunctie.mutatie) {
+            this.props.verblijfsfunctie['mutatie'] = 'gewijzigd';
         }
 
         this.forceUpdate();
@@ -94,7 +114,7 @@ export class VerblijfsFunctie extends Component {
     }
 
     render() {
-        if(this.props.verblijfsfunctie.mutaties && this.props.verblijfsfunctie.mutaties === 'verwijderd') {
+        if(this.props.verblijfsfunctie.mutatie && this.props.verblijfsfunctie.mutatie === 'verwijderd') {
             return null;
         }
 
@@ -121,7 +141,7 @@ export class VerblijfsFunctie extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-xs-3">Aantal personen</div>
-                                <div className="col-xs-9">{this.props.verblijfsfunctie['aantal-personen']}</div>
+                                <div className="col-xs-9">{this.getNumPersons()}</div>
                             </div>
                             {
                                 (this.verblijfsfunctie !== 'Woonfunctie') ? <div></div> :

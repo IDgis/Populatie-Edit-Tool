@@ -9,8 +9,33 @@ export class Pand extends Component {
         super(props);
         
         this.state = {
-            errorMessage: <div></div>
+            errorMessage: <div></div>,
+            fouten: [],
+            waarschuwingen: []
         }
+    }
+
+    componentDidMount() {
+        this.checkForErrors();
+    }
+
+    checkForErrors = () => {
+        const fouten = [];
+        const waarschuwingen = [];
+
+        if (this.props.pand.fouten) {
+            this.props.pand.fouten.forEach((fout, index) => {
+                fouten.push(<div className="alert alert-danger" key={`fout_${index}`}>{ fout }</div>);
+            });
+        }
+
+        if (this.props.pand.waarschuwingen) {
+            this.props.pand.waarschuwingen.forEach((waarschuwing, index) => {
+                waarschuwingen.push(<div className="alert alert-warning" key={`waarschuwing_${index}`}>{ waarschuwing }</div>);
+            });
+        }
+
+        this.setState({fouten, waarschuwingen});
     }
 
     /**
@@ -34,21 +59,21 @@ export class Pand extends Component {
                 Adres: {
                     "Identificatie": "",
                     "straat": straat,
-                    "huisnummer": nr,
+                    "huisnummer": parseInt(nr),
                     "huisletter": letter,
                     "huisnummer-toevoeging": "",
                     "postcode": postcode,
                     "woonplaats": plaats
                 },
-                mutaties: "toegevoegd"
+                mutatie: "toegevoegd"
             }
             this.props.pand['verblijfsobjecten'].push(vbo);
 
-            evt.target[0].value = "";
+            evt.target[0].value = this.straat;
             evt.target[1].value = "";
             evt.target[2].value = "";
-            evt.target[3].value = "";
-            evt.target[4].value = "";
+            evt.target[3].value = this.postcode;
+            evt.target[4].value = this.plaats;
 
             if(!document.getElementById('saveButton').classList.contains('disabled')) {
                 document.getElementById('saveButton').classList.add('disabled');
@@ -110,10 +135,20 @@ export class Pand extends Component {
 
     render() {
         const pand = this.props.pand;
+        const adres = pand.verblijfsobjecten[0].Adres;
+        this.straat = adres.straat ? adres.straat : "";
+        this.postcode = adres.postcode ? adres.postcode : "";
+        this.plaats = adres.woonplaats ? adres.woonplaats : "";
 
         return (
             <div className="row pand" key={pand['Identificatie']}>
                 <h3>Pand {pand['Identificatie']}</h3>
+                <div className="row">
+                    {this.state.fouten}
+                </div>
+                <div className="row">
+                    {this.state.waarschuwingen}
+                </div>
                 <div className="row">
                     <div className="col-xs-4">Aantal verblijfsobjecten</div>
                     <div className="col-xs-8">{pand['aantal verblijfsobjecten']}</div>
@@ -168,7 +203,7 @@ export class Pand extends Component {
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputStraat">Straat: </label>
-                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" />
+                                <input className="col-xs-4" type="text" id="inputStraat" name="straat" placeholder="Straatnaam" defaultValue={this.straat} />
                             </div>
                         </div>
                         <div className="row">
@@ -186,13 +221,13 @@ export class Pand extends Component {
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputPostcode">Postcode: </label>
-                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" />
+                                <input className="col-xs-4" type="text" id="inputPostcode" name="postcode" placeholder="Postcode" defaultValue={this.postcode} />
                             </div>
                         </div>
                         <div className="row">
                             <div className="form-group">
                                 <label className="col-xs-2" htmlFor="inputPlaats">Plaats: </label>
-                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" />
+                                <input className="col-xs-4" type="text" id="inputPlaats" name="plaats" placeholder="Plaats" defaultValue={this.plaats} />
                             </div>
                         </div>
                         <div className="row">

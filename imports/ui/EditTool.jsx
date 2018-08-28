@@ -3,7 +3,6 @@ import { Meteor } from 'meteor/meteor';
 
 import { HelpPage } from './HelpPage';
 import { Pand } from './Pand';
-import { getTabel } from '../methods/testdata';
 import { calculateOutput } from '../methods/rekenmodule';
 
 
@@ -20,7 +19,7 @@ export class EditTool extends Component {
             helpOpen: false,
         }
 
-        this.tabel = getTabel();
+        this.tabel = Meteor.settings.public.rekentabel;
     }
 
     /**
@@ -43,6 +42,10 @@ export class EditTool extends Component {
         }
     }
 
+    setOutputStatus = (status) => {
+        this.state.output.status = status;
+    }
+
     /**
      * Handle event when clicking on the abort button
      */
@@ -59,7 +62,17 @@ export class EditTool extends Component {
         evt.preventDefault();
 
         if(!evt.target.classList.contains('disabled')) {
-            this.state.output.status = "OK";
+            if (this.state.input && this.state.input.panden) {
+                this.state.input.panden.forEach(pand => {
+                    if (pand.fouten) {
+                        this.setOutputStatus('fouten');
+                    } else if (pand.waarschuwingen && !(this.state.output.status === 'fouten')) {
+                        this.setOutputStatus('waarschuwingen');
+                    } else if (!this.state.output.status) {
+                        this.setOutputStatus('OK');
+                    }
+                });
+            }
             window.parent.postMessage(JSON.stringify(this.state.output), Meteor.settings.public.targetUrl);
         }
     }
@@ -90,7 +103,7 @@ export class EditTool extends Component {
     render() {
         if(this.state.output && !this.state.errorMessage) {
             const panden = this.state.output.panden.filter(pand => {
-                return (!pand.mutaties || (pand.mutaties && pand.mutaties !== 'verwijderd'));
+                return (!pand.mutatie || (pand.mutatie && pand.mutatie !== 'verwijderd'));
             });
 
             const modalContent = this.state.helpOpen ? <HelpPage toggleHelp={this.toggleHelp.bind(this, false)} /> :

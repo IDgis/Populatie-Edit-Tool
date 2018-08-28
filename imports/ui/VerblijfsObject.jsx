@@ -10,6 +10,8 @@ export class VerblijfsObject extends Component {
         this.state = {
             addButtonVisible: true
         }
+
+        this.setDefaultVerblijfsfuncties(props.verblijfsobject.verblijfsfuncties);
     }
 
     componentDidMount = () => {
@@ -38,12 +40,34 @@ export class VerblijfsObject extends Component {
         }
     }
 
+    setDefaultVerblijfsfuncties = (verblijfsfuncties) => {
+        verblijfsfuncties.forEach(verblijfsfunctie => {
+
+            const hoofdFunctieTabel = this.props.tabel.filter(functie => functie['hoofdfunctie BAG'].toLowerCase() === verblijfsfunctie.Functie.toLowerCase())[0];
+            const aanvullendeIndelingen = hoofdFunctieTabel['aanvullende functies'];
+
+            let aanvullend = '';
+
+            if (hoofdFunctieTabel['hoofdfunctie BAG'] === 'Woonfunctie') {
+                if (verblijfsfunctie.Oppervlakte < 60) {
+                    aanvullend = aanvullendeIndelingen[0]['functie'];
+                } else {
+                    aanvullend = aanvullendeIndelingen[1]['functie'];
+                }
+            } else {
+                aanvullend = hoofdFunctieTabel.defaultAanvullend ? hoofdFunctieTabel.defaultAanvullend : aanvullendeIndelingen[0]['functie'];
+            }
+
+            verblijfsfunctie.aanvullend = aanvullend;
+        });
+    }
+
     /**
      * Render the 'Voeg Verblijfsfunctie toe' element
      */
     getAddBagFunctie = () => {
         const verblijfsfuncties = this.props.verblijfsobject['verblijfsfuncties']
-            .filter(functie => (!functie.mutaties || (functie.mutaties && functie.mutaties !== 'verwijderd')))
+            .filter(functie => (!functie.mutatie || (functie.mutatie && functie.mutatie !== 'verwijderd')))
             .map(functie => functie['Functie']);
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
 
@@ -64,7 +88,7 @@ export class VerblijfsObject extends Component {
                     <select>
                         {available.map((functie, i) => (<option key={functie + "_" + i}>{functie}</option>))}
                     </select>
-                    <input type="number" min="0" defaultValue="50" />m2
+                    <input type="number" min="0" defaultValue="100" />m2
                 </form>
             </div>
         );
@@ -77,12 +101,13 @@ export class VerblijfsObject extends Component {
         evt.preventDefault();
         const selectedBagFunctie = evt.target[1].value;
         const selectedOppervlakte = evt.target[2].value;
+        const aanvullend = this.getAanvullendeFunctie(selectedBagFunctie, selectedOppervlakte);
         const verblijfsfunctie = {
             "aantal-personen": 0,
-            "aanvullend": "",
+            "aanvullend": aanvullend,
             "Functie": selectedBagFunctie,
             "Oppervlakte": parseFloat(selectedOppervlakte),
-            "mutaties": "toegevoegd"
+            "mutatie": "toegevoegd"
         }
         this.props.verblijfsobject['verblijfsfuncties'].push(verblijfsfunctie);
 
@@ -93,12 +118,27 @@ export class VerblijfsObject extends Component {
         this.forceUpdate();
     }
 
+    getAanvullendeFunctie = (hoofdFunctie, oppervlakte) => {
+        const hoofdFunctieTabel = this.props.tabel.filter(functie => functie['hoofdfunctie BAG'] === hoofdFunctie)[0];
+        const aanvullend = hoofdFunctieTabel['aanvullende functies'];
+
+        if (hoofdFunctie === 'Woonfunctie') {
+            if (oppervlakte < 60) {
+                return aanvullend[0]['functie'];
+            } else {
+                return aanvullend[1]['functie'];
+            }
+        } else {
+            return hoofdFunctieTabel.defaultAanvullend ? hoofdFunctieTabel.defaultAanvullend : aanvullend[0]['functie'];
+        }
+    }
+
     /**
      * Removes this 'VerblijfsObject'
      */
     removeVerblijfsObject = (evt) => {
         evt.preventDefault();
-        this.props.verblijfsobject['mutaties'] = 'verwijderd';
+        this.props.verblijfsobject['mutatie'] = 'verwijderd';
         this.props.removeVerblijfsObject();
     }
 
@@ -119,8 +159,8 @@ export class VerblijfsObject extends Component {
     changeOppervlakte = (evt) => {
         const verblijfsobject = this.props.verblijfsobject;
         verblijfsobject['Oppervlakte'] = parseFloat(evt.target.value);
-        if(!verblijfsobject.mutaties) {
-            verblijfsobject['mutaties'] = 'gewijzigd';
+        if(!verblijfsobject.mutatie) {
+            verblijfsobject['mutatie'] = 'gewijzigd';
         }
 
         if(!document.getElementById('saveButton').classList.contains('disabled')) {
@@ -145,17 +185,19 @@ export class VerblijfsObject extends Component {
     }
 
     render() {
-        if(this.props.verblijfsobject.mutaties && this.props.verblijfsobject.mutaties === 'verwijderd') {
+        if(this.props.verblijfsobject.mutatie && this.props.verblijfsobject.mutatie === 'verwijderd') {
             return null;
         }
 
         const verblijfsobject = this.props.verblijfsobject;
-        const straat = verblijfsobject.Adres.straat;
-        const huisnr = verblijfsobject.Adres.huisnummer;
-        const huisltr = verblijfsobject.Adres.huisletter;
-        const huisnrtoev = verblijfsobject.Adres['huisnummer-toevoeging'];
-        const postcode = verblijfsobject.Adres.postcode;
-        const woonplaats = verblijfsobject.Adres.woonplaats;
+        const adres = verblijfsobject.Adres;
+
+        const straat = adres.straat ? adres.straat : "";
+        const huisnr = adres.huisnummer ? adres.huisnummer : "";
+        const huisltr = adres.huisletter ? adres.huisletter : "";
+        const huisnrtoev = adres['huisnummer-toevoeging'] ? adres['huisnummer-toevoeging'] : "";
+        const postcode = adres.postcode ? adres.postcode : "";
+        const woonplaats = adres.woonplaats ? adres.woonplaats : "";
 
         const partialKey = (straat + huisnr + huisltr + huisnrtoev + postcode + woonplaats).replace(' ', '');
 
