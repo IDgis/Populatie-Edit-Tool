@@ -31,6 +31,10 @@ export class VerblijfsObject extends Component {
         this.checkForErrors();
     }
 
+    componentWillReceiveProps() {
+        this.checkForErrors();
+    }
+
     componentDidUpdate = () => {
         const allHoofdfuncties = this.props.tabel.map(functie => functie['hoofdfunctie BAG']);
         const verblijfsfuncties = this.props.verblijfsobject['verblijfsfuncties'].map(functie => functie['Functie']);
@@ -191,9 +195,9 @@ export class VerblijfsObject extends Component {
     }
 
     getClassDisplayColor = () => {
-        if (this.props.verblijfsobject.fouten) {
+        if (this.props.verblijfsobject.fouten && this.props.verblijfsobject.fouten.length > 0) {
             return "panel-danger";
-        } else if (this.props.verblijfsobject.waarschuwingen) {
+        } else if (this.props.verblijfsobject.waarschuwingen && this.props.verblijfsobject.waarschuwingen.length > 0) {
             return "panel-warning";
         } else {
             return "panel-primary";

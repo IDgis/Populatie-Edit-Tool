@@ -18,6 +18,10 @@ export class VerblijfsFunctie extends Component {
         this.checkForErrors();
     }
 
+    componentWillReceiveProps() {
+        this.checkForErrors();
+    }
+
     checkForErrors = () => {
         const fouten = [];
         const waarschuwingen = [];
@@ -142,9 +146,9 @@ export class VerblijfsFunctie extends Component {
     }
 
     getClassDisplayColor = () => {
-        if (this.props.verblijfsfunctie.fouten) {
+        if (this.props.verblijfsfunctie.fouten && this.props.verblijfsfunctie.fouten.length > 0) {
             return "panel-danger";
-        } else if (this.props.verblijfsfunctie.waarschuwingen) {
+        } else if (this.props.verblijfsfunctie.waarschuwingen && this.props.verblijfsfunctie.waarschuwingen.length > 0) {
             return "panel-warning";
         } else {
             return "panel-info";

@@ -19,6 +19,10 @@ export class Pand extends Component {
         this.checkForErrors();
     }
 
+    componentWillReceiveProps() {
+        this.checkForErrors();
+    }
+
     checkForErrors = () => {
         const fouten = [];
         const waarschuwingen = [];
