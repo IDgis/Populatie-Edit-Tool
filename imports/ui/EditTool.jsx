@@ -65,16 +65,40 @@ export class EditTool extends Component {
             if (this.state.input && this.state.input.panden) {
                 this.state.input.panden.forEach(pand => {
                     if (pand.fouten) {
+                        this.state.output['waarschuwingen gezien'] = true;
                         this.setOutputStatus('fouten');
                     } else if (pand.waarschuwingen && !(this.state.output.status === 'fouten')) {
+                        this.state.output['waarschuwingen gezien'] = true;
                         this.setOutputStatus('waarschuwingen');
                     } else if (!this.state.output.status) {
                         this.setOutputStatus('OK');
                     }
                 });
             }
+
+            if (this.state.output['waarschuwingen gezien']) {
+                this.clearWarnings();
+            }
+
             window.parent.postMessage(JSON.stringify(this.state.output), Meteor.settings.public.targetUrl);
         }
+    }
+
+    clearWarnings = () => {
+        this.state.output.panden.forEach(pand => {
+            pand.fouten = [];
+            pand.waarschuwingen = [];
+
+            pand.verblijfsobjecten.forEach(verblijfsobject => {
+                verblijfsobject.fouten = [];
+                verblijfsobject.waarschuwingen = [];
+
+                verblijfsobject.verblijfsfuncties.forEach(verblijfsfunctie => {
+                    verblijfsfunctie.fouten = [];
+                    verblijfsfunctie.waarschuwingen = [];
+                });
+            });
+        });
     }
 
     /**

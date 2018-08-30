@@ -25,13 +25,13 @@ export class Pand extends Component {
 
         if (this.props.pand.fouten) {
             this.props.pand.fouten.forEach((fout, index) => {
-                fouten.push(<div className="alert alert-danger" key={`fout_${index}`}>{ fout }</div>);
+                fouten.push(<div className="alert alert-danger" key={`fout_pand_${index}`}>{ fout }</div>);
             });
         }
 
         if (this.props.pand.waarschuwingen) {
             this.props.pand.waarschuwingen.forEach((waarschuwing, index) => {
-                waarschuwingen.push(<div className="alert alert-warning" key={`waarschuwing_${index}`}>{ waarschuwing }</div>);
+                waarschuwingen.push(<div className="alert alert-warning" key={`waarschuwing_pand_${index}`}>{ waarschuwing }</div>);
             });
         }
 
