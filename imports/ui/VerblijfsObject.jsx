@@ -154,23 +154,6 @@ export class VerblijfsObject extends Component {
     }
 
     /**
-     * Change the area of the 'Verblijfsobject' based on the given input
-     */
-    changeOppervlakte = (evt) => {
-        const verblijfsobject = this.props.verblijfsobject;
-        verblijfsobject['Oppervlakte'] = parseFloat(evt.target.value);
-        if(!verblijfsobject.mutatie) {
-            verblijfsobject['mutatie'] = 'gewijzigd';
-        }
-
-        if(!document.getElementById('saveButton').classList.contains('disabled')) {
-            document.getElementById('saveButton').classList.add('disabled');
-        }
-
-        this.forceUpdate();
-    }
-
-    /**
      * Scroll automatically when the Verblijfsobject container is expanded
      */
     scrollToExpanded = (evt) => {
@@ -225,7 +208,6 @@ export class VerblijfsObject extends Component {
                             <div className="row">
                                 <div className="col-xs-2">Oppervlakte</div>
                                 <div className="col-xs-10">{verblijfsobject['Oppervlakte']} m2</div>
-                                {/*<div className="col-xs-10"><input type="number" min="0" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>*/}
                             </div>
                             <div className="row">
                                 {verblijfsobject.verblijfsfuncties.map((verblijfsfunctie, index) => (
