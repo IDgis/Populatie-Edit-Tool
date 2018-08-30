@@ -99,7 +99,10 @@ function calculateNumPersons(verblijfsfunctie, huishoudensgrootte, hoofdfunctieB
     } else if (rekenindicator === "m2 vbo per persoon" && typeof rekenfactor === 'number') {
         let numDecimals = 2;
         if (defaultAantal > 0.0) {
-            numDecimals = defaultAantal.toString().split('.')[1].length;
+            const tempAantal = defaultAantal.toString();
+            if (tempAantal.indexOf('.') != -1) {
+                numDecimals = tempAantal.split('.')[1].length;
+            }
         }
         
         return (oppervlakte / rekenfactor).toFixed(numDecimals);
@@ -107,8 +110,6 @@ function calculateNumPersons(verblijfsfunctie, huishoudensgrootte, hoofdfunctieB
         // Maatwerk, return default aantal-personen. Edit in Verblijfsfunctie itself
         return defaultAantal;
     }
-
-   return 0;
 }
 
 /**
