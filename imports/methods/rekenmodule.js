@@ -123,7 +123,9 @@ function calculateTotalArea(pand) {
     let totalArea = 0;
 
     pand.verblijfsobjecten.forEach(verblijfsobject => {
-        totalArea += parseFloat(verblijfsobject['Oppervlakte']);
+        if (isPresent(verblijfsobject)) {
+            totalArea += parseFloat(verblijfsobject['Oppervlakte']);
+        }
     });
 
     return totalArea;
@@ -138,7 +140,7 @@ function calculateVerblijfsObjectArea(verblijfsfuncties) {
     let totalArea = 0;
 
     verblijfsfuncties.forEach(verblijfsfunctie => {
-        if(isVerblijfsfunctiePresent(verblijfsfunctie)) {
+        if(isPresent(verblijfsfunctie)) {
             totalArea += parseFloat(verblijfsfunctie['Oppervlakte']);
         }
     });
@@ -149,8 +151,8 @@ function calculateVerblijfsObjectArea(verblijfsfuncties) {
 /**
  * Check whether a verblijfsfunctie isn't removed from a verblijfsobject
  * 
- * @param {Object} functie The verblijfsfunctie to check
+ * @param {Object} obj The Object to check
  */
-function isVerblijfsfunctiePresent(functie) {
-    return (!functie.mutatie || (functie.mutatie && functie.mutatie !== 'verwijderd'));
+function isPresent(obj) {
+    return (!obj.mutatie || (obj.mutatie && obj.mutatie !== 'verwijderd'));
 }
