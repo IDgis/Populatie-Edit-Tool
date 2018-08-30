@@ -7,8 +7,10 @@
 export function calculateOutput(input, table) {
     const panden = input['panden'].map(pand => {
         const verblijfsobjecten = calculcateVerblijfsobjecten(pand, table);
+        const totalArea = calculateTotalArea(pand);
 
         pand['verblijfsobjecten'] = verblijfsobjecten;
+        pand['geregistreerd totaal bruto vloeroppervlak'] = totalArea;
         return pand;
     });
 
@@ -110,6 +112,21 @@ function calculateNumPersons(verblijfsfunctie, huishoudensgrootte, hoofdfunctieB
         // Maatwerk, return default aantal-personen. Edit in Verblijfsfunctie itself
         return defaultAantal;
     }
+}
+
+/**
+ * Calculate the total oppervlakte for a Pand based on all oppervlaktes of the Verblijfsobjecten
+ * 
+ * @param {Object} pand The pand to calculate the total area based on the Verblijfsobjecten
+ */
+function calculateTotalArea(pand) {
+    let totalArea = 0;
+
+    pand.verblijfsobjecten.forEach(verblijfsobject => {
+        totalArea += parseFloat(verblijfsobject['Oppervlakte']);
+    });
+
+    return totalArea;
 }
 
 /**
