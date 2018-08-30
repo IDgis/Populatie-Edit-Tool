@@ -7,8 +7,10 @@
 export function calculateOutput(input, table) {
     const panden = input['panden'].map(pand => {
         const verblijfsobjecten = calculcateVerblijfsobjecten(pand, table);
+        const totalArea = calculateTotalArea(pand);
 
         pand['verblijfsobjecten'] = verblijfsobjecten;
+        pand['geregistreerd totaal bruto vloeroppervlak'] = totalArea;
         return pand;
     });
 
@@ -99,7 +101,10 @@ function calculateNumPersons(verblijfsfunctie, huishoudensgrootte, hoofdfunctieB
     } else if (rekenindicator === "m2 vbo per persoon" && typeof rekenfactor === 'number') {
         let numDecimals = 2;
         if (defaultAantal > 0.0) {
-            numDecimals = defaultAantal.toString().split('.')[1].length;
+            const tempAantal = defaultAantal.toString();
+            if (tempAantal.indexOf('.') != -1) {
+                numDecimals = tempAantal.split('.')[1].length;
+            }
         }
         
         return (oppervlakte / rekenfactor).toFixed(numDecimals);
@@ -107,8 +112,23 @@ function calculateNumPersons(verblijfsfunctie, huishoudensgrootte, hoofdfunctieB
         // Maatwerk, return default aantal-personen. Edit in Verblijfsfunctie itself
         return defaultAantal;
     }
+}
 
-   return 0;
+/**
+ * Calculate the total oppervlakte for a Pand based on all oppervlaktes of the Verblijfsobjecten
+ * 
+ * @param {Object} pand The pand to calculate the total area based on the Verblijfsobjecten
+ */
+function calculateTotalArea(pand) {
+    let totalArea = 0;
+
+    pand.verblijfsobjecten.forEach(verblijfsobject => {
+        if (isPresent(verblijfsobject)) {
+            totalArea += parseFloat(verblijfsobject['Oppervlakte']);
+        }
+    });
+
+    return totalArea;
 }
 
 /**
@@ -120,7 +140,7 @@ function calculateVerblijfsObjectArea(verblijfsfuncties) {
     let totalArea = 0;
 
     verblijfsfuncties.forEach(verblijfsfunctie => {
-        if(isVerblijfsfunctiePresent(verblijfsfunctie)) {
+        if(isPresent(verblijfsfunctie)) {
             totalArea += parseFloat(verblijfsfunctie['Oppervlakte']);
         }
     });
@@ -131,8 +151,8 @@ function calculateVerblijfsObjectArea(verblijfsfuncties) {
 /**
  * Check whether a verblijfsfunctie isn't removed from a verblijfsobject
  * 
- * @param {Object} functie The verblijfsfunctie to check
+ * @param {Object} obj The Object to check
  */
-function isVerblijfsfunctiePresent(functie) {
-    return (!functie.mutatie || (functie.mutatie && functie.mutatie !== 'verwijderd'));
+function isPresent(obj) {
+    return (!obj.mutatie || (obj.mutatie && obj.mutatie !== 'verwijderd'));
 }

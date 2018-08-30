@@ -8,7 +8,9 @@ export class VerblijfsObject extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addButtonVisible: true
+            addButtonVisible: true,
+            fouten: [],
+            waarschuwingen: []
         }
 
         this.setDefaultVerblijfsfuncties(props.verblijfsobject.verblijfsfuncties);
@@ -25,6 +27,12 @@ export class VerblijfsObject extends Component {
         if(allHoofdfuncties.length != verblijfsfuncties.length && !this.state.addButtonVisible) {
             this.setState({addButtonVisible: true});
         }
+
+        this.checkForErrors();
+    }
+
+    componentWillReceiveProps() {
+        this.checkForErrors();
     }
 
     componentDidUpdate = () => {
@@ -38,6 +46,25 @@ export class VerblijfsObject extends Component {
         if(allHoofdfuncties.length != verblijfsfuncties.length && !this.state.addButtonVisible) {
             this.setState({addButtonVisible: true});
         }
+    }
+
+    checkForErrors = () => {
+        const fouten = [];
+        const waarschuwingen = [];
+
+        if (this.props.verblijfsobject.fouten) {
+            this.props.verblijfsobject.fouten.forEach((fout, index) => {
+                fouten.push(<div className="alert alert-danger" key={`fout_object_${index}`}>{ fout }</div>);
+            });
+        }
+
+        if (this.props.verblijfsobject.waarschuwingen) {
+            this.props.verblijfsobject.waarschuwingen.forEach((waarschuwing, index) => {
+                waarschuwingen.push(<div className="alert alert-warning" key={`waarschuwing_object_${index}`}>{ waarschuwing }</div>);
+            });
+        }
+
+        this.setState({fouten, waarschuwingen});
     }
 
     setDefaultVerblijfsfuncties = (verblijfsfuncties) => {
@@ -154,23 +181,6 @@ export class VerblijfsObject extends Component {
     }
 
     /**
-     * Change the area of the 'Verblijfsobject' based on the given input
-     */
-    changeOppervlakte = (evt) => {
-        const verblijfsobject = this.props.verblijfsobject;
-        verblijfsobject['Oppervlakte'] = parseFloat(evt.target.value);
-        if(!verblijfsobject.mutatie) {
-            verblijfsobject['mutatie'] = 'gewijzigd';
-        }
-
-        if(!document.getElementById('saveButton').classList.contains('disabled')) {
-            document.getElementById('saveButton').classList.add('disabled');
-        }
-
-        this.forceUpdate();
-    }
-
-    /**
      * Scroll automatically when the Verblijfsobject container is expanded
      */
     scrollToExpanded = (evt) => {
@@ -181,6 +191,16 @@ export class VerblijfsObject extends Component {
                 block: 'start',     // start | center  | end   | nearest. Default: center
                 inline: 'nearest'   // start | center  | end   | nearest. Default: nearest
             });
+        }
+    }
+
+    getClassDisplayColor = () => {
+        if (this.props.verblijfsobject.fouten && this.props.verblijfsobject.fouten.length > 0) {
+            return "panel-danger";
+        } else if (this.props.verblijfsobject.waarschuwingen && this.props.verblijfsobject.waarschuwingen.length > 0) {
+            return "panel-warning";
+        } else {
+            return "panel-primary";
         }
     }
 
@@ -201,9 +221,11 @@ export class VerblijfsObject extends Component {
 
         const partialKey = (straat + huisnr + huisltr + huisnrtoev + postcode + woonplaats).replace(' ', '');
 
+        const classDisplayColor = this.getClassDisplayColor();
+
         return (
             <div className="row verblijfsobject">
-                <div className="panel panel-primary">
+                <div className={`panel ${classDisplayColor}`}>
                     <div className="panel-heading" id={`heading${partialKey}`} onClick={this.scrollToExpanded.bind(this)}>
                         <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${partialKey}`} aria-expanded="false" aria-controls={`collapse${partialKey}`}>
                             Verblijfsobject: {`${straat} ${huisnr}${huisltr}${huisnrtoev}, ${postcode} ${woonplaats}`}   
@@ -215,6 +237,12 @@ export class VerblijfsObject extends Component {
                     <div id={`collapse${partialKey}`} className="collapse" aria-labelledby={`heading${partialKey}`}>
                         <div className="panel-body">
                             <div className="row">
+                                {this.state.fouten}
+                            </div>
+                            <div className="row">
+                                {this.state.waarschuwingen}
+                            </div>
+                            <div className="row">
                                 <div className="col-xs-2">Verblijfsobjectid</div>
                                 <div className="col-xs-10">{verblijfsobject['Identificatie']}</div>
                             </div>
@@ -225,7 +253,6 @@ export class VerblijfsObject extends Component {
                             <div className="row">
                                 <div className="col-xs-2">Oppervlakte</div>
                                 <div className="col-xs-10">{verblijfsobject['Oppervlakte']} m2</div>
-                                {/*<div className="col-xs-10"><input type="number" min="0" defaultValue={verblijfsobject['oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>*/}
                             </div>
                             <div className="row">
                                 {verblijfsobject.verblijfsfuncties.map((verblijfsfunctie, index) => (

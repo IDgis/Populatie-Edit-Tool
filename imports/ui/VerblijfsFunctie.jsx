@@ -6,7 +6,39 @@ export class VerblijfsFunctie extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            fouten: [],
+            waarschuwingen: []
+        }
+
         this.verblijfsfunctie = this.getVerblijfsfunctie();
+    }
+
+    componentDidMount() {
+        this.checkForErrors();
+    }
+
+    componentWillReceiveProps() {
+        this.checkForErrors();
+    }
+
+    checkForErrors = () => {
+        const fouten = [];
+        const waarschuwingen = [];
+
+        if (this.props.verblijfsfunctie.fouten) {
+            this.props.verblijfsfunctie.fouten.forEach((fout, index) => {
+                fouten.push(<div className="alert alert-danger" key={`fout_functie_${index}`}>{ fout }</div>);
+            });
+        }
+
+        if (this.props.verblijfsfunctie.waarschuwingen) {
+            this.props.verblijfsfunctie.waarschuwingen.forEach((waarschuwing, index) => {
+                waarschuwingen.push(<div className="alert alert-warning" key={`waarschuwing_functie_${index}`}>{ waarschuwing }</div>);
+            });
+        }
+
+        this.setState({fouten, waarschuwingen});
     }
 
     /**
@@ -113,6 +145,16 @@ export class VerblijfsFunctie extends Component {
         }
     }
 
+    getClassDisplayColor = () => {
+        if (this.props.verblijfsfunctie.fouten && this.props.verblijfsfunctie.fouten.length > 0) {
+            return "panel-danger";
+        } else if (this.props.verblijfsfunctie.waarschuwingen && this.props.verblijfsfunctie.waarschuwingen.length > 0) {
+            return "panel-warning";
+        } else {
+            return "panel-info";
+        }
+    }
+
     render() {
         if(this.props.verblijfsfunctie.mutatie && this.props.verblijfsfunctie.mutatie === 'verwijderd') {
             return null;
@@ -122,9 +164,11 @@ export class VerblijfsFunctie extends Component {
         key = key.split(' ').join('_'); // replace all spaces
         key = key.split('(').join('').split(')').join(''); // replace all braces
 
+        const classDisplayColor = this.getClassDisplayColor();
+
         return (
             <div className="row verblijfsfunctie">
-                <div className="panel panel-info">
+                <div className={`panel ${classDisplayColor}`}>
                     <div className="panel-heading" id={`heading${key}`} onClick={this.scrollToExpanded.bind(this)}>
                         <h4 className="panel-title" data-toggle="collapse" data-target={`#collapse${key}`} aria-expanded="false" aria-controls={`collapse${key}`}>
                             Verblijfsfunctie: {this.verblijfsfunctie}
@@ -135,6 +179,12 @@ export class VerblijfsFunctie extends Component {
                     </div>
                     <div id={`collapse${key}`} className="collapse" aria-labelledby={`heading${key}`}>
                         <div className="panel-body">
+                            <div className="row">
+                                {this.state.fouten}
+                            </div>
+                            <div className="row">
+                                {this.state.waarschuwingen}
+                            </div>
                             <div className="row">
                                 <div className="col-xs-3">Oppervlakte</div>
                                 <div className="col-xs-9"><input type="number" min="0" defaultValue={this.props.verblijfsfunctie['Oppervlakte']} onChange={this.changeOppervlakte.bind(this)} />m2</div>
