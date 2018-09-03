@@ -73,8 +73,10 @@ export class VerblijfsFunctie extends Component {
             if (!defaultAantal > 0.0) {
                 defaultAantal = (this.props.verblijfsfunctie['Oppervlakte'] / aanvullendeIndeling['default']).toFixed(2);
             }
+            this.props.verblijfsfunctie['aantal-personen'] = defaultAantal;
             return <input type="number" step="0.01" min="0" defaultValue={defaultAantal} onChange={this.changeNumPersons} />;
         } else {
+            this.props.verblijfsfunctie['aantal-personen'] = defaultAantal;
             return defaultAantal;
         }
     }
